@@ -3,7 +3,7 @@ Config = Config or {}
 Config.RenewedBanking = true
 
 Config.PriceBrackets = {
-    ["small"] = 100,
+    ["small"] = 200,
     ["medium"] = 100,
     ["large"] = 100,
 }
@@ -15,7 +15,7 @@ Config.MaterialCheck = 8 -- How many trash bags each person MUST turning in to r
 
 
 Config.GroupLimit = 4 -- How many people can be in a group during the runs?
-Config.GroupPay = 0.25 -- How much more you get paid for doing a group run (5% more)
+Config.GroupPay = 1.25 -- How much more you get paid for doing a group run (5% more)
 Config.GroupPayLimit = 4 -- How many people to get the Config.GroupPay bonus?
 
 Config.Buffs = false -- Do u use ps or tnj buffs then enable this

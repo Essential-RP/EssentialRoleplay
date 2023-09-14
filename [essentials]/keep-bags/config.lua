@@ -123,7 +123,7 @@ Config.Backpacks                          = {
      },
      ['duffle2'] = {
           slots = 40,
-          size = 400000,
+          size = 100000,
           cloth = {
                male = {
                     ["bag"] = { item = 129, texture = 0 }

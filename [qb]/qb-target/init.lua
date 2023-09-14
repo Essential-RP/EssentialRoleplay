@@ -139,7 +139,7 @@ Config.BoxZones = {
         maxZ=31.09,
         options = {
             {
-                event = "essential-policejob:ToggleDuty",
+                event = "qb-policejob:ToggleDuty",
                 icon = "fa-solid fa-shield-halved",
                 label = "Clock On",
                 job = "police",
@@ -164,7 +164,7 @@ Config.BoxZones = {
                 job = "police",
             },
         },
-        distance = 3.5
+        distance = 2.5
     },
     ["Police Weapons"] = {
         name = "PoliceWeapons",
@@ -183,7 +183,7 @@ Config.BoxZones = {
                 job = "police",
             },
         },
-        distance = 3.5
+        distance = 2.5
     },
     ["Police Ammo"] = {
         name = "PoliceAmmo",
@@ -202,7 +202,7 @@ Config.BoxZones = {
                 job = "police",
             },
         },
-        distance = 3.5
+        distance = 2.5
     },
     ["PD Garage"] = {
         name = "PD Garage",

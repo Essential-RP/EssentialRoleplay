@@ -40,8 +40,8 @@ Config.HurtDamage = {
 Config.CanLootMultiple = true -- Can the player loot multiple items?
 Config.MaxLootItem = math.random(1,2) -- If Config.CanLootMultiple = true. Max items the player can loot
 Config.Loottable = {
-    [1] = {item = 'pistol_ammo',         chances = 2,    min = 1,    max = 2},
-    [2] = {item = 'packagedweed',     chances = 25,   min = 1,    max = 3},
-    [3] = {item = 'steel',              chances = 27,   min = 3,    max = 5},
-    [4] = {item = 'weedplant_seedf',   chances = 40,    min = 2,    max = 4},
+    [1] = {item = 'packagedweed',     chances = 5,   min = 1,    max = 2},
+    [2] = {item = 'steel',              chances = 27,   min = 3,    max = 5},
+    [3] = {item = 'weedplant_seedf',   chances = 25,    min = 1,    max = 2},
+    [4] = {item = 'plastic',   chances = 40,    min = 4,    max = 5},
 }

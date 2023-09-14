@@ -228,7 +228,7 @@ CreateThread(function()
 				if isPolice then
 					local HolsterVariant = GetPedDrawableVariation(ped, 7)
 					if IsPedModel(PlayerPedId(), "mp_m_freemode_01") then
-						if HolsterVariant == 131 or HolsterVariant == 132 or HolsterVariant == 129 or HolsterVariant == 130 or HolsterVariant == 133 or HolsterVariant == 134 or HolsterVariant == 135 or HolsterVariant == 136 or HolsterVariant == 144 or HolsterVariant == 145 then
+						if HolsterVariant == 196 or HolsterVariant == 132 or HolsterVariant == 129 or HolsterVariant == 130 or HolsterVariant == 133 or HolsterVariant == 134 or HolsterVariant == 135 or HolsterVariant == 136 or HolsterVariant == 144 or HolsterVariant == 145 then
 							WearingHolster = true
 						else
 							WearingHolster = false
@@ -256,9 +256,9 @@ CreateThread(function()
 
 							if IsWeaponHolsterable(newWeap) then
 								if IsPedModel(PlayerPedId(), "mp_m_freemode_01") then
-									SetPedComponentVariation(ped, 7, currentHolster == 131 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
 								else
-									SetPedComponentVariation(ped, 7, currentHolster == 212 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
 								end
 							end
 							currWeapon = newWeap
@@ -302,9 +302,9 @@ CreateThread(function()
 
 							if IsWeaponHolsterable(newWeap) then
 								if IsPedModel(PlayerPedId(), "mp_m_freemode_01") then
-									SetPedComponentVariation(ped, 7, currentHolster == 131 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
 								else
-									SetPedComponentVariation(ped, 7, currentHolster == 212 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
 								end
 							end
 
@@ -344,9 +344,9 @@ CreateThread(function()
 
 							if IsWeaponHolsterable(newWeap) then
 								if IsPedModel(PlayerPedId(), "mp_m_freemode_01") then
-									SetPedComponentVariation(ped, 7, currentHolster == 131 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 132 or currentHolster == 129 and 130 or currentHolster == 133 and 134 or currentHolster == 135 and 136 or currentHolster == 144 and 145, currentHolsterTexture, 2)
 								else
-									SetPedComponentVariation(ped, 7, currentHolster == 212 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
+									SetPedComponentVariation(ped, 7, currentHolster == 196 and 213 or currentHolster == 214 and 215 or currentHolster == 216 and 217, currentHolsterTexture, 2)
 								end
 							end
 
