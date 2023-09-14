@@ -598,7 +598,7 @@ Config.Products = {
             type = "item",
             slot = 1,
         },
-        [2] = {5
+        [2] = {
             name = "externaldrive",
             price = 500,
             amount = 250,

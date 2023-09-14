@@ -129,7 +129,7 @@ Config.Backpacks                          = {
                     ["bag"] = { item = 129, texture = 0 }
                },
                female = {
-                    ["bag"] = { item = 85, texture = 13 }
+                    ["bag"] = { item = 141, texture = 0 }
                }
           },
      },

@@ -49,50 +49,50 @@ local RecyableGuy = {
 }
 local RecyableGuyMetal = {
     name = 'RecyableGuyMetal',
-    model = 's_m_m_ccrew_01',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToMetal',
     tradeLabel = 'Need Some MetalScrap?',
-    coords = vector4(-346.58361816406, -1555.9102783203, 25.230131149292, 178.14823913574),
+    coords = vector4(-356.57009887695, -1542.7843017578, 27.722051620483, 358.89273071289),
     animation = 'WORLD_HUMAN_STAND_IMPATIENT',
 } 
 local RecyableGuyRubber = {
     name = 'RecyableGuyRubber',
-    model = 's_m_m_ccrew_01',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToRubber',
     tradeLabel = 'Need Some Rubber?',
-    coords = vector4(-345.3935546875, -1555.8875732422, 25.229963302612, 184.81939697266),
+    coords = vector4(-358.70205688477, -1542.7447509766, 27.734687805176, 355.04083251953),
     animation = 'WORLD_HUMAN_STAND_IMPATIENT',
 }
 local RecyableGuyIron = {
     name = 'RecyableGuyIron',
-    model = 's_m_m_dockwork_01',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToIron',
     tradeLabel = 'Need Some Iron?',
-    coords = vector4(-337.27569580078, -1571.501953125, 25.226440429688, 148.36882019043),
+    coords = vector4(-359.65084838867, -1541.4805908203, 27.728715896606, 268.84759521484),
     animation = 'WORLD_HUMAN_LEANING',
 }
 local RecyableGuyPlastic = {
     name = 'RecyableGuyPlastic',
-    model = 's_m_m_dockwork_01',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToPlastic',
     tradeLabel = 'Need Some Plastic?',
-    coords = vector4(-335.60620117188, -1572.2889404297, 25.227214813232, 149.15396118164),
+    coords = vector4(-356.62026977539, -1539.8729248047, 27.717351913452, 178.07542419434),
     animation = 'WORLD_HUMAN_LEANING',
 }
 local RecyableGuyGlass = {
     name = 'RecyableGuyGlass',
-    model = 's_m_m_janitor',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToGlass',
     tradeLabel = 'Need Some Glass?',
-    coords = vector4(-356.36459350586, -1543.0541992188, 27.720994949341, 352.56384277344),
+    coords = vector4(-358.66137695313, -1540.0045166016, 27.718837738037, 175.4506072998),
     animation = 'WORLD_HUMAN_LEANING',
 }
 local RecyableGuySteel = {
     name = 'RecyableGuySteel',
-    model = 's_m_m_janitor',
+    model = 's_m_y_garbage',
     tradeName = 'RecycToSteel',
     tradeLabel = 'Need Some Steel?',
-    coords = vector4(-358.62359619141, -1543.1689453125, 27.732727050781, 353.94973754883),
+    coords = vector4(-355.37927246094, -1537.1390380859, 27.708986282349, 266.80429077148),
     animation = 'WORLD_HUMAN_LEANING',
 }
 

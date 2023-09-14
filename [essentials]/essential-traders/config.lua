@@ -400,6 +400,7 @@ Config.Trades = {
     ['ChainsToBars'] = ChainsToBars,
     ['WatchesToBars'] = WatchesToBars,
     ['BarToCash'] = BarToCash,
+    ['MattsToRecyclables'] = MattsToRecyclables,
     ['RecycToMetal'] = RecycToMetal,
     ['RecycToRubber'] = RecycToRubber,
     ['RecycToIron'] = RecycToIron,
