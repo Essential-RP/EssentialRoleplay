@@ -30,6 +30,7 @@ Config.Permissions = {
     ["fivem:5606260"] = "god",
     ["fivem:1096504"] = "admin",
     ["fivem:2167031"] = "god",
+    ["fivem:1812481"] = "god",
     -- ["license:1234"] = "mod",
     -- ["license:1234"] = "new_role1",
     -- ["license:1234"] = "new_role2",
