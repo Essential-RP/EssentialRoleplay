@@ -41,7 +41,7 @@ Config.Blip = {
 Config.BossPed = 'a_m_m_mlcrisis_01' -- The model name of the boss ped.
 
 Config.BossLocation = { -- The locations where the boss can spawn.
-    [1] = vector4(-1560.5179443359, -413.35998535156, 37.095054626465, 139.16877746582),
+    [1] = vector4(-2175.5852050781, 4294.9067382813, 48.061058044434, 238.69386291504),
     -- [2] = vector4(569.92, -1016.13, 32.56, 104.47),
     -- [3] = vector4(683.48, -789.34, 23.5, 0.13)
 }

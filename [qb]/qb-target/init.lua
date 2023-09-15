@@ -109,20 +109,20 @@ Config.BoxZones = {
         },
         distance = 3.5
     },
-	["Start Chop Job"] = {
-        name = "ChopShop",
-        coords = vector3(-559.95, -1805.36, 22.61),
-        length = 2,
-        width = 2,
-        heading = 335,
+	["Chopper"] = {
+        name = "Chopper",
+        coords = vector3(725.12, -1074.17, 28.31),
+        length = 1,
+        width = 1,
+        heading = 0,
         debugPoly = false,
-        minZ=20.01,
-        maxZ=24.01,
+        minZ=25.11,
+        maxZ=29.11,
         options = {
             {
-                event = "qb-pawnshop:client:openMenu",
-                icon = "fas fa-car",
-                label = "Open Smelter",
+                event = "qb-chopshop:jobaccept",
+                icon = "fas fa-mask",
+                label = "Hmm??",
                 job = "all",
             },
         },
@@ -1074,6 +1074,16 @@ Config.Peds = {
 		minusOne = true,
         scenario = 'WORLD_HUMAN_CLIPBOARD',
     },
+    { -----------Chop Garage-------------
+    model = 'a_m_y_juggalo_01',
+    coords = vector4(725.18859863281, -1074.2800292969, 28.311006546021, 313.68228149414),
+    gender = 'male',
+    freeze = true,
+    invincible = true,
+    blockevents = true,
+    minusOne = true,
+    scenario = 'WORLD_HUMAN_LEANING',
+},
 
 
 
