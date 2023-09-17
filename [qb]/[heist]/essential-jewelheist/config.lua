@@ -2,6 +2,7 @@ Config = Config or {}
 
 Config.OneStore = true -- Set to true if using just the main Vangelico's Jewellers
 Config.Cooldown = 5 * (60 * 2000) -- where x is minutes ie. x * (60 * 2000) \\ For door auto lock function
+Config.HackCoolDown = 1
 Config.Timeout = 5 * (60 * 2000) -- where x is minutes ie. x * (60 * 2000) \\ For case smashing cooldown
 Config.AutoLock = true -- Set to false if you don't want the doors to auto lock/lock at all
 Config.RequiredCops = 0
@@ -12,12 +13,12 @@ Config.VangelicoHours = { -- Store Hours
     close = 18 -- When they lock for the night // Default 6pm
   },
   alertnight = {
-    start = 18, -- The start of higher chance alerts in the evening // Default 6pm
-    fin = 20 -- The end of higher chance alerts in the evening // Default 8pm
+    start = 0, -- The start of higher chance alerts in the evening // Default 6pm
+    fin = 0 -- The end of higher chance alerts in the evening // Default 8pm
   },
   alertmorn = {
-    start = 4, -- The start of higher chance alerts in the morning // Default 4am
-    fin = 6 -- The end of higher chance alerts in the morning // Default 6am
+    start = 0, -- The start of higher chance alerts in the morning // Default 4am
+    fin = 0 -- The end of higher chance alerts in the morning // Default 6am
   }
 }
 
@@ -43,86 +44,47 @@ end
 ]]--
 
 Config.Stores = {
-  [1] = { -- City Vangelico's
-    label = 'Vangelico\'s Jewellers',
-    coords = vector3(-630.5, -237.13, 38.08),
-    ['Doors'] = {
-      main = 'jewellery-citymain',
-      sec = 'jewellery-citysec'
-    },
-    ['Thermite'] = {
-      ['Main'] = {
-        -- City Vangelico's \\ Rooftop Thermite --
-        coords = vector3(-596.02, -283.7, 50.4),
-        h = 300.0,
-        minZ = 50.12,
-        maxZ = 51.32,
-        anim = vector4(-596.02, -283.7, 50.4, 304.5), 
-        effect = vector3(-596.02, -283.7, 50.19)
+  [1] = {
+      label = 'Vangelico\'s Jewellers',
+      coords = vector3(-630.5, -237.13, 38.08),
+      Doors = {
+          main = 'jewellery-citymain',
+          sec = 'jewellery-citysec',
       },
-      ['Sec'] = {
-        -- City Vangelico's \\ Inside Door --
-        coords = vector3(-628.61, -229.74, 38.06),
-        h = 35,
-        minZ = 37.06,
-        maxZ = 39.06,
-        anim = vector4(-628.45, -229.78, 38.06, 35), 
-        effect = vector3(-628.45, -230.78, 37.86)
-      }
-    },
-    ['Hack'] = {
-      -- City Vangelico's \\ PC Hack  --
-      coords = vector3(-631.04, -230.63, 38.06),
-      h = 37.0,
-      minZ = 37.56,
-      maxZ = 38.56,
-      anim = vector4(-631.03, -229.55, 39.23, 180.18)
-    },
-    hit = false, -- Don't touch this
-    hacked = false -- Don't touch this
+      Thermite = {
+          Main = {
+              coords = vector3(-610.82, -238.45, 50.23),
+              h = 26.256,
+              minZ = 50.12,
+              maxZ = 51.32,
+              anim = vector4(-610.6083984375, -238.84471130371, 50.226501464844, 26.256488800049),
+              effect = vector3(-610.82, -238.45, 50.19),
+          },
+          Sec = {
+              coords = vector3(-628.61, -229.74, 38.06),
+              h = 35,
+              minZ = 37.06,
+              maxZ = 39.06,
+              anim = vector4(-628.45, -229.78, 38.06, 35),
+              effect = vector3(-628.45, -230.78, 37.86),
+          },
+      },
+      Hack = {
+          coords = vector3(-631.04, -230.63, 38.06),
+          h = 37.0,
+          minZ = 37.56,
+          maxZ = 38.56,
+          anim = vector4(-631.03, -229.55, 39.23, 180.18),
+      },
+      hit = false,
+      hacked = false,
   },
-  -- [2] = { -- Grapeseed Vangelico's
-  --   label = 'Vangelico\'s Jewellers',
-  --   coords = vector3(1649.78, 4882.32, 42.16),
-  --   ['Doors'] = {
-  --     main = 'jewellery-grapemain',
-  --     sec = 'jewellery-grapesec'
-  --   },
-  --   ['Thermite'] = {
-  --     -- Grapeseed Vangelico's \\ Side Alley Thermite --
-  --     coords = vector3(1645.07, 4867.87, 42.03),
-  --     h = 8.0,
-  --     minZ = 41.23,
-  --     maxZ = 42.53,
-  --     anim = vector4(1645.07, 4867.87, 42.03, 16.33), 
-  --     effect = vector3(1645.07, 4867.87, 41.84)
-  --   },
-  --   hit = false -- Don't touch this
-  -- },
-  -- [3] = { -- Paleto Vangelico's
-  --   label = 'Vangelico\'s Jewellers',
-  --   coords = vector3(-378.45, 6047.68, 32.69),
-  --   ['Doors'] = {
-  --     main = 'jewellery-palmain',
-  --     sec = 'jewellery-palsec'
-  --   },
-  --   ['Thermite'] = {
-  --     -- Paleto Vangelico's \\ Rear Alley Thermite --
-  --     coords = vector3(-368.35, 6055.36, 31.5), -- h = 136.27
-  --     h = 135.0,
-  --     minZ = 31.2,
-  --     maxZ = 32.4,
-  --     anim = vector4(-368.35, 6055.36, 31.5, 136.27), 
-  --     effect = vector3(-368.35, 6055.36, 31.31)
-  --   },
-  --   hit = false -- Don't touch this
-  -- }
 }
 
 Config.DoorItem = 'purplelaptop' -- item to remove\check for when placing a charge
 Config.ThermiteSettings = {
   time = 60, -- time the hack displays for \\ half being showing the puzzle and the other solving
-  gridsize = 5, -- (5, 6, 7, 8, 9, 10) size of grid by square units, ie. gridsize = 5 is a 5 * 5 (25) square grid
+  gridsize = 4, -- (5, 6, 7, 8, 9, 10) size of grid by square units, ie. gridsize = 5 is a 5 * 5 (25) square grid
   incorrectBlocks = 2 -- incorrectBlocks = number of incorrect blocks after which the game will fail
 }
 
@@ -133,14 +95,14 @@ Config.BackRoom.Thermite = {
   gridsize = 5, -- (5, 6, 7, 8, 9, 10) size of grid by square units, ie. gridsize = 5 is a 5 * 5 (25) square grid
   incorrectBlocks = 10 -- incorrectBlocks = number of incorrect blocks after which the game will fail
 }
-Config.BackRoom.Chance = 8 -- chance of getting a reward from the back room
+Config.BackRoom.Chance = 100 -- chance of getting a reward from the back room
 Config.BackRoom.Reward = 'warehouseusb' -- item to give when entering the back room
 Config.BackRoom.Amount = {
   min = 1, -- min amount of reward to give
   max = 1 -- max amount of reward to give
 }
 
-Config.HackItem = 'unmarkedsimcard' -- item to remove\check for when hacking
+Config.HackItem = { "trojan_usb", "customlaptop" } -- item to remove\check for when hacking
 Config.VarHackSettings = {
   blocks = 6, -- time the hack displays for \\ half being showing the puzzle and the other solving
   time = 8 -- time the hack displays for
@@ -225,6 +187,37 @@ Config.VitrineRewards = {
   }
 }
 
+Config.NecklaceRewards = {
+  [1] = {
+    item = 'silverchain',
+    ['Amounts'] = {
+      min = 1,
+      max = 2
+    }
+  },
+  [2] = {
+    item = 'goldchain',
+    ['Amounts'] = {
+      min = 1,
+      max = 2
+    }
+  },
+  [3] = {
+    item = 'diamond_necklace',
+    ['Amounts'] = {
+      min = 1,
+      max = 2
+    }
+  },
+  [4] = {
+    item = '10kgoldchain',
+    ['Amounts'] = {
+      min = 1,
+      max = 2
+    }
+  }
+}
+
 Config.Skills = {
   enabled = false, -- Enable Skills
   system = 'mz-skills', 
@@ -258,6 +251,79 @@ Config.Skills = {
       multi = 1.25
     }
   }
+}
+
+Config.Necklacecases = {
+  [1] = {
+    coords = vector3(-616.08, -234.94, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [2] = {
+    coords = vector3(-615.99, -236.45, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [3] = {
+    coords = vector3(-617.04, -237.7, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [4] = {
+    coords = vector3(-618.52, -238.26, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [5] = {
+    coords = vector3(-620.07, -237.82, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [6] = {
+    coords = vector3(-628.16, -226.63, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [7] = {
+    coords = vector3(-628.07, -225.08, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [8] = {
+    coords = vector3(-627.12, -223.85, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [9] = {
+    coords = vector3(-625.6, -223.32, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
+  [10] = {
+    coords = vector3(-624.12, -223.82, 38.06),
+    isOpened = false,
+    isBusy = false,
+    propStart = `des_jewel_cab3_start`,
+    propEnd = `des_jewel_cab3_end`
+  },
 }
 
 Config.Vitrines = {

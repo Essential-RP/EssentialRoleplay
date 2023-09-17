@@ -773,6 +773,33 @@ end
 
 exports('Hunting', Hunting)
 
+local function Carchop(camId)
+    local currentPos = GetEntityCoords(PlayerPedId())
+    local locationInfo = getStreetandZone(currentPos)
+    local gender = GetPedGender()
+    TriggerServerEvent("dispatch:server:notify", {
+        dispatchcodename = "Car Chop", -- has to match the codes in sv_dispatchcodes.lua so that it generates the right blip
+        dispatchCode = "10-90",
+        firstStreet = locationInfo,
+        gender = gender,
+        camId = camId,
+        model = nil,
+        plate = nil,
+        priority = 2, -- priority
+        firstColor = nil,
+        automaticGunfire = false,
+        origin = {
+            x = currentPos.x,
+            y = currentPos.y,
+            z = currentPos.z
+        },
+        dispatchMessage = "Possible Car Chop", -- message
+        job = { "police" } -- jobs that will get the alerts
+    })
+end
+
+exports('Carchop', Carchop)
+
 local function CustomAlert(data)
 
     local coords = data.coords or vec3(0.0, 0.0, 0.0)

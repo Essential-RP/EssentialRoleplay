@@ -146,6 +146,29 @@ QBCore.Commands.Add('removepermission', Lang:t("command.removepermission.help"),
     end
 end, 'god')
 
+-- QBCore.Commands.Add("rep", "Check your crafting reputation.", {}, false, function(source, args)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+
+--     if Player then
+--         local repValue = Player.PlayerData.metadata['craftingrep'] or 0
+-- 		local garbagevalue = Player.PlayerData.metadata['garbage'] or 0
+--         -- print('Crafting Reputation: ' .. repValue) -- Add this line for debugging
+--         TriggerClientEvent('QBCore:Notify', src, 'Crafting Reputation: ' .. repValue, 'primary')
+-- 		TriggerClientEvent('QBCore:Notify', src, 'Garbage Reputation: ' .. garbagevalue, 'primary')
+--     end
+-- end, "user")
+
+-- QBCore.Commands.Add("rep", "Check your crafting reputation.", {}, false, function(source, args)
+--     local src = source
+--     local Player = QBCore.Functions.GetPlayer(src)
+
+--     if Player then
+--         local repValue = Player.PlayerData.metadata['craftingrep'] or 0
+--         QBCore.Functions.Notify('Crafting Reputation: ' .. repValue, 'success')
+--     end
+-- end, "user")
+
 -- Open & Close Server
 
 QBCore.Commands.Add('openserver', Lang:t("command.openserver.help"), {}, false, function(source)

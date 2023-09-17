@@ -163,8 +163,8 @@ Config.Backpacks                          = {
           },
      },
      ['policepouches1'] = {
-          slots = 12,
-          size = 400000,
+          slots = 10,
+          size = 50000,
           cloth = {
                male = {
                     ["accessory"] = { item = 147, texture = 0 }
@@ -174,7 +174,15 @@ Config.Backpacks                          = {
                },
           },
           whitelist = {
-               ['weapon_pistol'] = true
+               ['weapon_glock17'] = true,
+               ['empty_evidence_bag'] = true,
+               ['weapon_nightstick'] = true,
+               ['taserammo'] = true,
+               ['weapon_stungun'] = true,
+               ['handcuffs'] = true,
+               ['pistol_ammo'] = true,
+               ['weapon_flashlight'] = true
+
           },
      },
 }

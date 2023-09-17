@@ -29,6 +29,7 @@ local Translations = {
     },
     general = {
         target_label = 'Smash the display case',
+        target_label1 = 'Smash the necklace display case',
         drawtextui_grab = '[E] Smash the display case',
         drawtextui_broken = 'Display case is broken'
     }

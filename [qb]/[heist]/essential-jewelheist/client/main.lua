@@ -391,108 +391,78 @@ AddEventHandler('essential-jewelheistcustom:client:SmashCase', function(case)
   end)
 end)
 
-AddEventHandler('essential-jewelheistcustom:client:Thermite', function(store, door)
-  local AlertChance = randomNum(1, 100)
-  if checkTime(Config.VangelicoHours.alertmorn.start, Config.VangelicoHours.alertmorn.fin) or checkTime(Config.VangelicoHours.alertnight.start, Config.VangelicoHours.alertnight.fin) then
-    AlertChance = randomNum(1, 50)
-  else
-    AlertChance = AlertChance
-  end
-
-  if AlertChance <= 10 then
-    if Config.Dispatch == 'qb' then
-      TriggerServerEvent('police:server:policeAlert', 'Suspicious Activity')
-    elseif Config.Dispatch == 'ps' then
-      exports['ps-dispatch']:SuspiciousActivity()
-    elseif Config.Dispatch == 'cd' then
-      alertsCD('suspicious')
-    end
-    firstAlarm = true
-  end
-
-  local thermTab = not door and Config.Stores[store]['Thermite'].Main or Config.Stores[store]['Thermite'].Sec
+AddEventHandler('essential-jewelheistcustom:client:SmashNecklaceCase', function(necklace)
   QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)
     if not checkTime(Config.VangelicoHours.range.open, Config.VangelicoHours.range.close) then
-      if Config.Skills.enabled then 
-        if not checkSkill('Thermite') then
-          QBCore.Functions.Notify(Lang:t('error.skill_fail', {value = Config.Skills['Thermite'].skill}), 'error')
-          return
+      if not Config.Necklacecases[necklace].isOpened then
+        if Config.Skills.enabled then
+          if not checkSkill('Vitrine') then
+            QBCore.Functions.Notify(Lang:t('error.skill_fail', {value = Config.Skills['Vitrine'].skill}), 'error')
+            return
+          end
         end
-      end
-      if cops >= Config.RequiredCops then
-        local ped = PlayerPedId()
-        local coords = GetEntityCoords(ped)
-        local printChance = randomNum(1, 100)
-        local dist = #(coords - thermTab.coords)
-        if dist <= 1.5 then
-          if QBCore.Functions.HasItem(not door and Config.DoorItem or Config.BackRoom.Item) then
-            if printChance <= 80 and not isWearingHandshoes() then
-              TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
-            elseif printChance <= 5 and isWearingHandshoes() then
-              TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+        if cops >= Config.RequiredCops then
+          if isStoreHit(necklace, false) or isStoreHacked() then
+            local animDict = 'missheist_jewel'
+            local animName = 'smash_case'
+            local ped = PlayerPedId()
+            local plyCoords = GetOffsetFromEntityInWorldCoords(ped, 0, 0.6, 0)
+            local pedWeapon = GetSelectedPedWeapon(ped)
+            if randomNum(1, 100) <= 80 and not isWearingHandshoes() then
+              TriggerServerEvent('evidence:server:CreateFingerDrop', plyCoords)
+            elseif randomNum(1, 100) <= 5 and isWearingHandshoes() then
+              TriggerServerEvent('evidence:server:CreateFingerDrop', plyCoords)
               QBCore.Functions.Notify(Lang:t('error.fingerprints'), 'error')
             end
-            SetEntityHeading(ped, thermTab.h)
-            local thermSettings = not door and Config.ThermiteSettings or Config.BackRoom.Thermite
-            exports['ps-ui']:Thermite(function(success) -- success
-              if success then
-                if not door then TriggerServerEvent('essential-jewelheistcustom:server:StoreHit', store, true) end
-                QBCore.Functions.Notify(Lang:t('success.thermite'), 'success')
-                local loc = thermTab.anim
-                local rot = GetEntityRotation(ped)
-                local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rot.x, rot.y, rot.z, 2, false, false, 1065353216, 0, 1.3)
-                local bag = CreateObject(`hei_p_m_bag_var22_arm_s`, loc.x, loc.y, loc.z,  true,  true, false)
-                SetEntityCollision(bag, false, true)
-                NetworkAddPedToSynchronisedScene(ped, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'thermal_charge', 1.5, -4.0, 1, 16, 1148846080, 0)
-                NetworkAddEntityToSynchronisedScene(bag, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'bag_thermal_charge', 4.0, -8.0, 1)
-                NetworkStartSynchronisedScene(bagscene)
-                Wait(1500)
-                coords = GetEntityCoords(ped)
-                local thermal_charge = CreateObject(`hei_prop_heist_thermite`, coords.x, coords.y, coords.z + 0.2,  true,  true, true)
-            
-                SetEntityCollision(thermal_charge, false, true)
-                AttachEntityToEntity(thermal_charge, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
-                Wait(4000)
-                TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
-            
-                DetachEntity(thermal_charge, 1, 1)
-                FreezeEntityPosition(thermal_charge, true)
-                Wait(100)
-                DeleteObject(bag)
-                ClearPedTasks(ped)
-            
-                Wait(100)
-                if Config.Skills.enabled then addSkillToPlayer('Thermite') end
-                loadPtfx('scr_ornate_heist')
-                local termcoords = GetEntityCoords(thermal_charge)
-                local effect = StartParticleFxLoopedAtCoord('scr_heist_ornate_thermal_burn', termcoords.x, termcoords.y + 1.0, termcoords.z, 0, 0, 0, 0x3F800000, 0, 0, 0, 0)
-                Wait(3000)
-                StopParticleFxLooped(effect, 0)
-                DeleteObject(thermal_charge)
-                TriggerEvent('essential-jewelheistcustom:client:HackSuccess', store, door)
-                if not firstAlarm and AlertChance <= 25 then
-                  if Config.Dispatch == 'qb' then
-                    TriggerServerEvent('police:server:policeAlert', 'Explosion Reported')
-                  elseif Config.Dispatch == 'ps' then
-                    exports["ps-dispatch"]:Explosion()
-                  elseif Config.Dispatch == 'cd' then
-                    alertsCD('explosion')
-                  end
-                  firstAlarm = true
+            smashing = true
+            if Config.Skills.enabled then addSkillToPlayer('Vitrine') end
+            QBCore.Functions.Progressbar('smash_vitrine', Lang:t('info.smashing_progress'), Config.WhitelistedWeapons[pedWeapon].timeOut, false, true, {
+              disableMovement = true,
+              disableCarMovement = true,
+              disableMouse = false,
+              disableCombat = true,
+            }, {}, {}, {}, function() -- Done
+              TriggerServerEvent('essential-jewelheistcustom:server:NecklaceReward', necklace)
+              TriggerServerEvent('essential-jewelheistcustom:server:SetTimeout', necklace)
+              if not secondAlarm and not isStoreHacked() then 
+                if Config.Dispatch == 'qb' then
+                  TriggerServerEvent('police:server:policeAlert', 'Robbery in progress')
+                elseif Config.Dispatch == 'ps' then
+                  exports['ps-dispatch']:VangelicoRobbery(getCamID(necklace))
+                elseif Config.Dispatch == 'cd' then
+                  alertsCD('robbery')
                 end
-              else
-                QBCore.Functions.Notify(Lang:t('error.fail_therm'), 'error')
-                TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+                secondAlarm = true
+                firstAlarm = false
               end
-            end, thermSettings.time, thermSettings.gridsize, thermSettings.incorrectBlocks)
+              smashing = false
+              TaskPlayAnim(ped, animDict, 'exit', 3.0, 3.0, -1, 2, 0, 0, 0, 0)
+            end, function() -- Cancel
+              TriggerServerEvent('essential-jewelheistcustom:server:SetNecklaceState', 'isBusy', false, necklace)
+              smashing = false
+              TaskPlayAnim(ped, animDict, 'exit', 3.0, 3.0, -1, 2, 0, 0, 0, 0)
+            end)
+            TriggerServerEvent('essential-jewelheistcustom:server:SetNecklaceState', 'isBusy', true, necklace)
+
+            CreateThread(function()
+              while smashing do
+                loadAnimDict(animDict)
+                TaskPlayAnim(ped, animDict, animName, 8.0, 8.0, -1, 31, 0.0, false, false, false)
+                Wait(500)
+                TriggerServerEvent('InteractSound_SV:PlayOnSource', 'breaking_vitrine_glass', 0.25)
+                loadPtfx('scr_jewelheist')
+                StartParticleFxLoopedAtCoord('scr_jewel_cab_smash', plyCoords.x, plyCoords.y, plyCoords.z, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+                Wait(5500)
+              end
+            end)
           else
-            QBCore.Functions.Notify(Lang:t('error.wrong_item'), 'error')
+            QBCore.Functions.Notify(Lang:t('error.security_active'), 'error')
           end
         else
-          QBCore.Functions.Notify(Lang:t('error.too_far'), 'error')
+          QBCore.Functions.Notify(Lang:t('error.minimum_police', {value = Config.RequiredCops}), 'error')
         end
       else
-        QBCore.Functions.Notify(Lang:t('error.minimum_police', {value = Config.RequiredCops}), 'error')
+        QBCore.Functions.Notify(Lang:t('error.vitrine_hit'), 'error')
       end
     else
       QBCore.Functions.Notify(Lang:t('error.stores_open'), 'error')
@@ -500,8 +470,248 @@ AddEventHandler('essential-jewelheistcustom:client:Thermite', function(store, do
   end)
 end)
 
+      -- QBCore.Functions.TriggerCallback("essential-jewelheistcustom:server:Cooldown", function(HackCoolDown)
+      --   if HackCoolDown then
+
+      AddEventHandler('essential-jewelheistcustom:client:Thermite', function(store, door)
+        local AlertChance = randomNum(1, 100)
+        if checkTime(Config.VangelicoHours.alertmorn.start, Config.VangelicoHours.alertmorn.fin) or checkTime(Config.VangelicoHours.alertnight.start, Config.VangelicoHours.alertnight.fin) then
+          AlertChance = randomNum(1, 50)
+        else
+          AlertChance = AlertChance
+        end
+      
+        if AlertChance <= 10 then
+          if Config.Dispatch == 'qb' then
+            TriggerServerEvent('police:server:policeAlert', 'Suspicious Activity')
+          elseif Config.Dispatch == 'ps' then
+            exports['ps-dispatch']:SuspiciousActivity()
+          elseif Config.Dispatch == 'cd' then
+            alertsCD('suspicious')
+          end
+          firstAlarm = true
+        end
+      
+        -- Check for HackCooldown here
+        QBCore.Functions.TriggerCallback("essential-jewelheistcustom:server:Cooldown", function(HackCoolDown)
+          if HackCoolDown then
+            QBCore.Functions.Notify("Hack is on cooldown!", "error", 5000)
+          else
+            local thermTab = not door and Config.Stores[store]['Thermite'].Main or Config.Stores[store]['Thermite'].Sec
+            QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)
+              if not checkTime(Config.VangelicoHours.range.open, Config.VangelicoHours.range.close) then
+                if Config.Skills.enabled then
+                  if not checkSkill('Thermite') then
+                    QBCore.Functions.Notify(Lang:t('error.skill_fail', { value = Config.Skills['Thermite'].skill }), 'error')
+                    return
+                  end
+                end
+                if cops >= Config.RequiredCops then
+                  local ped = PlayerPedId()
+                  local coords = GetEntityCoords(ped)
+                  local printChance = randomNum(1, 100)
+                  local dist = #(coords - thermTab.coords)
+                  if dist <= 1.5 then
+                    if QBCore.Functions.HasItem(not door and Config.DoorItem or Config.BackRoom.Item) then
+                      if printChance <= 80 and not isWearingHandshoes() then
+                        TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+                      elseif printChance <= 5 and isWearingHandshoes() then
+                        TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+                        QBCore.Functions.Notify(Lang:t('error.fingerprints'), 'error')
+                      end
+                      SetEntityHeading(ped, thermTab.h)
+                      local thermSettings = not door and Config.ThermiteSettings or Config.BackRoom.Thermite
+                      exports['ps-ui']:Thermite(function(success) -- success
+                        if success then
+                          if not door then TriggerServerEvent('essential-jewelheistcustom:server:StoreHit', store, true) end
+                          QBCore.Functions.Notify(Lang:t('success.thermite'), 'success')
+                          local loc = thermTab.anim
+                          local rot = GetEntityRotation(ped)
+                          local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rot.x, rot.y, rot.z, 2, false, false, 1065353216, 0, 1.3)
+                          local bag = CreateObject(`hei_p_m_bag_var22_arm_s`, loc.x, loc.y, loc.z, true, true, false)
+                          SetEntityCollision(bag, false, true)
+                          NetworkAddPedToSynchronisedScene(ped, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'thermal_charge', 1.5, -4.0, 1, 16, 1148846080, 0)
+                          NetworkAddEntityToSynchronisedScene(bag, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'bag_thermal_charge', 4.0, -8.0, 1)
+                          NetworkStartSynchronisedScene(bagscene)
+                          Wait(1500)
+                          coords = GetEntityCoords(ped)
+                          local thermal_charge = CreateObject(`hei_prop_heist_thermite`, coords.x, coords.y, coords.z + 0.2, true, true, true)
+                          SetEntityCollision(thermal_charge, false, true)
+                          AttachEntityToEntity(thermal_charge, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
+                          Wait(4000)
+                          TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+                          DetachEntity(thermal_charge, 1, 1)
+                          FreezeEntityPosition(thermal_charge, true)
+                          Wait(100)
+                          DeleteObject(bag)
+                          ClearPedTasks(ped)
+                          Wait(100)
+                          if Config.Skills.enabled then addSkillToPlayer('Thermite') end
+                          loadPtfx('scr_ornate_heist')
+                          local termcoords = GetEntityCoords(thermal_charge)
+                          local effect = StartParticleFxLoopedAtCoord('scr_heist_ornate_thermal_burn', termcoords.x, termcoords.y + 1.0, termcoords.z, 0, 0, 0, 0x3F800000, 0, 0, 0, 0)
+                          Wait(3000)
+                          StopParticleFxLooped(effect, 0)
+                          DeleteObject(thermal_charge)
+      
+                          -- When the hack is successful, trigger the cooldown event
+                          TriggerServerEvent('essential-jewelheistcustom:server:sethacktimercool')
+                          TriggerEvent('essential-jewelheistcustom:client:HackSuccess', store, door)
+      
+                          if not firstAlarm and AlertChance <= 25 then
+                            if Config.Dispatch == 'qb' then
+                              TriggerServerEvent('police:server:policeAlert', 'Explosion Reported')
+                            elseif Config.Dispatch == 'ps' then
+                              exports["ps-dispatch"]:Explosion()
+                            elseif Config.Dispatch == 'cd' then
+                              alertsCD('explosion')
+                            end
+                            firstAlarm = true
+                          end
+                        else
+                          QBCore.Functions.Notify(Lang:t('error.fail_therm'), 'error')
+                          TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+                        end
+                      end, thermSettings.time, thermSettings.gridsize, thermSettings.incorrectBlocks)
+                    else
+                      QBCore.Functions.Notify(Lang:t('error.wrong_item'), 'error')
+                    end
+                  else
+                    QBCore.Functions.Notify(Lang:t('error.too_far'), 'error')
+                  end
+                else
+                  QBCore.Functions.Notify(Lang:t('error.minimum_police', { value = Config.RequiredCops }), 'error')
+                end
+              else
+                QBCore.Functions.Notify(Lang:t('error.stores_open'), 'error')
+              end
+            end) -- Closing the second QBCore.Functions.TriggerCallback
+          end -- Closing the HackCoolDown check
+        end) -- Closing the first QBCore.Functions.TriggerCallback
+      end) -- Closing the function and AddEventHandler
+
+
+--OG CODE
+-- AddEventHandler('essential-jewelheistcustom:client:Thermite', function(store, door)
+--   local AlertChance = randomNum(1, 100)
+--   if checkTime(Config.VangelicoHours.alertmorn.start, Config.VangelicoHours.alertmorn.fin) or checkTime(Config.VangelicoHours.alertnight.start, Config.VangelicoHours.alertnight.fin) then
+--     AlertChance = randomNum(1, 50)
+--   else
+--     AlertChance = AlertChance
+--   end
+
+--   if AlertChance <= 10 then
+--     if Config.Dispatch == 'qb' then
+--       TriggerServerEvent('police:server:policeAlert', 'Suspicious Activity')
+--     elseif Config.Dispatch == 'ps' then
+--       exports['ps-dispatch']:SuspiciousActivity()
+--     elseif Config.Dispatch == 'cd' then
+--       alertsCD('suspicious')
+--     end
+--     firstAlarm = true
+--   end
+
+--   local thermTab = not door and Config.Stores[store]['Thermite'].Main or Config.Stores[store]['Thermite'].Sec
+--   QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)
+--     if not checkTime(Config.VangelicoHours.range.open, Config.VangelicoHours.range.close) then
+--       if Config.Skills.enabled then 
+--         if not checkSkill('Thermite') then
+--           QBCore.Functions.Notify(Lang:t('error.skill_fail', {value = Config.Skills['Thermite'].skill}), 'error')
+--           return
+--         end
+--       end
+--       if cops >= Config.RequiredCops then
+--         local ped = PlayerPedId()
+--         local coords = GetEntityCoords(ped)
+--         local printChance = randomNum(1, 100)
+--         local dist = #(coords - thermTab.coords)
+--         if dist <= 1.5 then
+--           if QBCore.Functions.HasItem(not door and Config.DoorItem or Config.BackRoom.Item) then
+--             if printChance <= 80 and not isWearingHandshoes() then
+--               TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+--             elseif printChance <= 5 and isWearingHandshoes() then
+--               TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+--               QBCore.Functions.Notify(Lang:t('error.fingerprints'), 'error')
+--             end
+--             SetEntityHeading(ped, thermTab.h)
+--             local thermSettings = not door and Config.ThermiteSettings or Config.BackRoom.Thermite
+--             exports['ps-ui']:Thermite(function(success) -- success
+--               if success then
+--                 if not door then TriggerServerEvent('essential-jewelheistcustom:server:StoreHit', store, true) end
+--                 QBCore.Functions.Notify(Lang:t('success.thermite'), 'success')
+--                 local loc = thermTab.anim
+--                 local rot = GetEntityRotation(ped)
+--                 local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rot.x, rot.y, rot.z, 2, false, false, 1065353216, 0, 1.3)
+--                 local bag = CreateObject(`hei_p_m_bag_var22_arm_s`, loc.x, loc.y, loc.z,  true,  true, false)
+--                 SetEntityCollision(bag, false, true)
+--                 NetworkAddPedToSynchronisedScene(ped, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'thermal_charge', 1.5, -4.0, 1, 16, 1148846080, 0)
+--                 NetworkAddEntityToSynchronisedScene(bag, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'bag_thermal_charge', 4.0, -8.0, 1)
+--                 NetworkStartSynchronisedScene(bagscene)
+--                 Wait(1500)
+--                 coords = GetEntityCoords(ped)
+--                 local thermal_charge = CreateObject(`hei_prop_heist_thermite`, coords.x, coords.y, coords.z + 0.2,  true,  true, true)
+            
+--                 SetEntityCollision(thermal_charge, false, true)
+--                 AttachEntityToEntity(thermal_charge, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
+--                 Wait(4000)
+--                 TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+--                 TriggerServerEvent('essential-jewelheist:server:setcooldown')
+            
+--                 DetachEntity(thermal_charge, 1, 1)
+--                 FreezeEntityPosition(thermal_charge, true)
+--                 Wait(100)
+--                 DeleteObject(bag)
+--                 ClearPedTasks(ped)
+            
+--                 Wait(100)
+--                 if Config.Skills.enabled then addSkillToPlayer('Thermite') end
+--                 loadPtfx('scr_ornate_heist')
+--                 local termcoords = GetEntityCoords(thermal_charge)
+--                 local effect = StartParticleFxLoopedAtCoord('scr_heist_ornate_thermal_burn', termcoords.x, termcoords.y + 1.0, termcoords.z, 0, 0, 0, 0x3F800000, 0, 0, 0, 0)
+--                 Wait(3000)
+--                 StopParticleFxLooped(effect, 0)
+--                 DeleteObject(thermal_charge)
+--                 TriggerEvent('essential-jewelheistcustom:client:HackSuccess', store, door)
+--                 if not firstAlarm and AlertChance <= 25 then
+--                   if Config.Dispatch == 'qb' then
+--                     TriggerServerEvent('police:server:policeAlert', 'Explosion Reported')
+--                   elseif Config.Dispatch == 'ps' then
+--                     exports["ps-dispatch"]:Explosion()
+--                   elseif Config.Dispatch == 'cd' then
+--                     alertsCD('explosion')
+--                   end
+--                   firstAlarm = true
+--                 end
+--               else
+--                 QBCore.Functions.Notify(Lang:t('error.fail_therm'), 'error')
+--                 TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+--               end
+--             end, thermSettings.time, thermSettings.gridsize, thermSettings.incorrectBlocks)
+--           else
+--             QBCore.Functions.Notify(Lang:t('error.wrong_item'), 'error')
+--           end
+--         else
+--           QBCore.Functions.Notify(Lang:t('error.too_far'), 'error')
+--         end
+--       else
+--         QBCore.Functions.Notify(Lang:t('error.minimum_police', {value = Config.RequiredCops}), 'error')
+--       end
+--     else
+--       QBCore.Functions.Notify(Lang:t('error.stores_open'), 'error')
+--     end
+--   end)
+-- end)
+
+local hackFailures = 0
+
 AddEventHandler('essential-jewelheistcustom:client:HackSecurity', function(door)
   QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)
+    if hackFailures >= 2 then
+      -- Notify the player about too many hack failures
+      QBCore.Functions.Notify("You've failed the hack too many times.", 'error')
+      return
+    end
+
     if not checkTime(Config.VangelicoHours.range.open, Config.VangelicoHours.range.close) then
       if Config.Skills.enabled then
         if not checkSkill('Hack') then
@@ -548,6 +758,7 @@ AddEventHandler('essential-jewelheistcustom:client:HackSecurity', function(door)
                 TriggerServerEvent('essential-jewelheistcustom:server:RemoveBackitem')
                 TriggerServerEvent('essential-jewelheistcustom:server:HackReward')  
               else
+                hackFailures = hackFailures + 1 -- Increment the hack failure count
                 hacking = false
                 QBCore.Functions.Notify(Lang:t('error.fail_hack'), 'error')
                 TriggerServerEvent('essential-jewelheistcustom:server:RemoveBackitem')
@@ -641,6 +852,17 @@ RegisterNetEvent('essential-jewelheistcustom:client:SetVitrineState', function(s
 
   if stateType == 'isOpened' and state == false then
     RemoveModelSwap(Config.Vitrines[k].coords, 0.1, Config.Vitrines[k].propStart, Config.Vitrines[k].propEnd, false)
+  end
+end)
+
+RegisterNetEvent('essential-jewelheistcustom:client:SetNecklaceState', function(stateType, state, k)
+  Config.Necklacecases[k][stateType] = state
+  if stateType == 'isBusy' and state == true then
+    CreateModelSwap(Config.Necklacecases[k].coords, 0.1, Config.Necklacecases[k].propStart, Config.Necklacecases[k].propEnd, false)
+  end
+
+  if stateType == 'isOpened' and state == false then
+    RemoveModelSwap(Config.Necklacecases[k].coords, 0.1, Config.Necklacecases[k].propStart, Config.Necklacecases[k].propEnd, false)
   end
 end)
 
@@ -747,6 +969,42 @@ else
       distance = 1.5
     })
   end
+  for i = 1, 10 do -- Changed from "for i = 1, 10 #Config.Necklacecases do"
+    exports['qb-target']:AddBoxZone('necklacecases' .. i, Config.Necklacecases[i].coords, 0.4, 0.8, {
+      name = 'necklacecases' .. i,
+      heading = 40,
+      minZ = Config.Necklacecases[i].coords.z - 1,
+      maxZ = Config.Necklacecases[i].coords.z + 1,
+      debugPoly = false
+    }, 
+    {
+      options = {
+        {
+          icon = 'fa fa-hand',
+          label = Lang:t('general.target_label1'),
+          action = function()
+            local ped = PlayerPedId()
+            if GetSelectedPedWeapon(ped) == `WEAPON_UNARMED` then
+              QBCore.Functions.Notify(Lang:t('error.unarmed'), 'error')
+            else
+              if validWeapon() then
+                TriggerEvent('essential-jewelheistcustom:client:SmashNecklaceCase', i)
+              else
+                QBCore.Functions.Notify(Lang:t('error.wrong_weapon'), 'error')
+              end
+            end
+          end,
+          canInteract = function()
+            if Config.Necklacecases[i].isOpened or Config.Necklacecases[i].isBusy then
+              return false
+            end
+            return true
+          end,
+        }
+      },
+      distance = 1.5
+    })
+  end
   exports['qb-target']:AddBoxZone('jewelthermite' .. 1, Config.Stores[1]['Thermite']['Main'].coords, 0.4, 0.8, {
     name = 'jewelthermite' .. 1,
     heading = Config.Stores[1]['Thermite']['Main'].h,
@@ -759,13 +1017,19 @@ else
       {
         icon = 'fas fa-bug',
         label = 'Blow Fuse Box',
-        item = Config.DoorItem,
         action = function()
-          TriggerEvent('essential-jewelheistcustom:client:Thermite', 1, false)
+          if QBCore.Functions.HasItem(Config.DoorItem) then
+            TriggerEvent('essential-jewelheistcustom:client:Thermite', 1, false)
+          else
+            QBCore.Functions.Notify("You need the required item to blow the fuse.", 'error')
+          end
+        end,
+        canInteract = function()
+          return true -- Always allow interaction to check the target
         end
       }
     },
-    distance = 2.5 -- This is the distance for you to be at for the target to turn blue, this is in GTA units and has to be a float value
+    distance = 2.5 -- This is the distance for you to be at for the target to turn blue; this is in GTA units and has to be a float value
   })
 end
 
@@ -800,19 +1064,21 @@ exports['qb-target']:AddBoxZone('jewelpc' .. 1, Config.Stores[1]['Hack'].coords,
 {
   options = {
     {
-    icon = 'fas fa-bug',
-    label = 'Hack Security System',
-    item = Config.HackItem,
-    action = function()
-        TriggerEvent('essential-jewelheistcustom:client:HackSecurity')
+      icon = 'fas fa-bug',
+      label = 'Hack Security System',
+      action = function()
+        if QBCore.Functions.HasItem(Config.HackItem) then
+          TriggerEvent('essential-jewelheistcustom:client:HackSecurity')
+        else
+          QBCore.Functions.Notify("You need the required item to hack the security system.", 'error')
+        end
       end,
-    canInteract = function()
-        if isStoreHacked() then return false end
-        return true
+      canInteract = function()
+        return true -- Always allow interaction to check the target
       end
     }
   },
-  distance = 2.5 -- This is the distance for you to be at for the target to turn blue, this is in GTA units and has to be a float value
+  distance = 2.5 -- This is the distance for you to be at for the target to turn blue; this is in GTA units and has to be a float value
 })
 
 -------------------------------- THREADS --------------------------------

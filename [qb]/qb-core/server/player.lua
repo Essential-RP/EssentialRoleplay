@@ -112,6 +112,7 @@ function QBCore.Player.CheckPlayerData(source, PlayerData)
     PlayerData.metadata['bloodtype'] = PlayerData.metadata['bloodtype'] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
     PlayerData.metadata['dealerrep'] = PlayerData.metadata['dealerrep'] or 0
     PlayerData.metadata['craftingrep'] = PlayerData.metadata['craftingrep'] or 0
+    PlayerData.metadata['crimeskill'] = PlayerData.metadata['crimeskill'] or 0
     PlayerData.metadata['weaponmakingrep'] = PlayerData.metadata['weaponmakingrep'] or 0
     PlayerData.metadata['attachmentcraftingrep'] = PlayerData.metadata['attachmentcraftingrep'] or 0 
     PlayerData.metadata['ammomakingrep'] = PlayerData.metadata['ammomakingrep'] or 0  

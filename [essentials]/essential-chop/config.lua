@@ -3,11 +3,12 @@ Config = {}
 -- EITHER "new" or "old"    If new Remove shared_scripts from the fxmanifest.lua
 Config.Version = "new" -- If you use a newer version of QBCores "qb-core" (around 1 month old) then set to new otherwise set it to old
 Config.Target = "qb"   -- use either "qb", "berkie" or "bt" depending on which target you use (qb-target, berkie-target or bt-target)
-Config.CallCops = "true"   -- True or False, do you want police to be notified when a vehicle is being chopped.
+Config.CallCops = "false"   -- True or False, do you want police to be notified when a vehicle is being chopped.
 Config.CoolDown = 10       -- How long people must wait before starting another job (in minutes)
 Config.StartLoc = vector4(-552.0936, -1792.5475, 22.3643, 67.7999)  -- Starting Location with target and PED
 Config.CashReward = { min = 175, max = 250} -- Cash reward for completing a chop contract
 Config.GroupReward = { min = 800, max = 1200} -- Cash reward for completing a chop contract
+Config.CrimeRep = false
 
 -- Rare Loot Items
 Config.RareLoot = 10 -- %Chance to receive a rare loot item

@@ -1,6 +1,6 @@
 RegisterNetEvent('qb-chopshop:wheelanimation')
 AddEventHandler('qb-chopshop:wheelanimation', function()
-    TriggerEvent('animations:client:EmoteCommandStart', {"mechanic3"})
+    TriggerEvent('animations:client:EmoteCommandStart', {"mechanic4"})
 	QBCore.Functions.Progressbar("wheel", Config.Locale["Wheel"], 7000, false, true, {
 		disableMovement = true,
 		disableCarMovement = true,
