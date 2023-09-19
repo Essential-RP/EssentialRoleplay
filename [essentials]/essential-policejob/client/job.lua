@@ -337,7 +337,7 @@ RegisterNetEvent('police:client:CallAnim', function()
     end)
 end)
 
-RegisterNetEvent('police:client:ImpoundVehicle', function(fullImpound)
+RegisterNetEvent('police:client:ImpoundVehicle', function()
     local dialog = exports['qb-input']:ShowInput({
         header = Lang:t('info.tow_vehicle'),
         submitText = "Confirm",
@@ -356,13 +356,14 @@ RegisterNetEvent('police:client:ImpoundVehicle', function(fullImpound)
         local vehicle = QBCore.Functions.GetClosestVehicle()
         local bodyDamage = math.ceil(GetVehicleBodyHealth(vehicle))
         local engineDamage = math.ceil(GetVehicleEngineHealth(vehicle))
-        local totalFuel = exports['cdn-fuel']:GetFuel(vehicle)
+        local totalFuel = exports[Config.FuelScript]:GetFuel(vehicle)
         if tonumber(dialog.price) < 0 then price = 0 else price = dialog.price end
         if vehicle ~= 0 and vehicle then
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
             local vehpos = GetEntityCoords(vehicle)
             if #(pos - vehpos) < 5.0 and not IsPedInAnyVehicle(ped) then
+                 ExecuteCommand('me Grabbing Info For Towing HQ')
                QBCore.Functions.Progressbar('impound', Lang:t('progressbar.impound'), 5000, false, true, {
                     disableMovement = true,
                     disableCarMovement = true,
@@ -391,6 +392,71 @@ RegisterNetEvent('police:client:ImpoundVehicle', function(fullImpound)
                     end
                     QBCore.Functions.DeleteVehicle(vehicle)
                     TriggerEvent('QBCore:Notify', Lang:t('success.impounded'), 'success')
+                    ClearPedTasks(ped)
+                end, function() -- Play When Cancel
+                    ClearPedTasks(ped)
+                    TriggerEvent('QBCore:Notify', Lang:t('error.canceled'), 'error')
+                end)
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('police:client:SeizeVehicle', function(fullImpound)
+    local dialog = exports['qb-input']:ShowInput({
+        header = Lang:t('info.seize_vehicle'),
+        submitText = "Confirm",
+        inputs = {
+            {
+                text = Lang:t('info.amount'), -- text you want to be displayed as a place holder
+                name = "price", -- name of the input should be unique otherwise it might override
+                type = "number", -- type of the input - number will not allow non-number characters in the field so only accepts 0-9
+                isRequired = true, -- Optional [accepted values: true | false] but will submit the form if no value is inputted
+                default = 0, -- Default number option, this is optional
+            }
+        }
+    })
+
+    if dialog then
+        local vehicle = QBCore.Functions.GetClosestVehicle()
+        local bodyDamage = math.ceil(GetVehicleBodyHealth(vehicle))
+        local engineDamage = math.ceil(GetVehicleEngineHealth(vehicle))
+        local totalFuel = exports[Config.FuelScript]:GetFuel(vehicle)
+        if tonumber(dialog.price) < 0 then price = 0 else price = dialog.price end
+        if vehicle ~= 0 and vehicle then
+            local ped = PlayerPedId()
+            local pos = GetEntityCoords(ped)
+            local vehpos = GetEntityCoords(vehicle)
+            if #(pos - vehpos) < 5.0 and not IsPedInAnyVehicle(ped) then
+                ExecuteCommand('me Grabbing Info To Seize Vehicle')
+               QBCore.Functions.Progressbar('seize', Lang:t('progressbar.seize'), 5000, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, {
+                    animDict = 'missheistdockssetup1clipboard@base',
+                    anim = 'base',
+                    flags = 1,
+                }, {
+                    model = 'prop_notepad_01',
+                    bone = 18905,
+                    coords = { x = 0.1, y = 0.02, z = 0.05 },
+                    rotation = { x = 10.0, y = 0.0, z = 0.0 },
+                },{
+                    model = 'prop_pencil_01',
+                    bone = 58866,
+                    coords = { x = 0.11, y = -0.02, z = 0.001 },
+                    rotation = { x = -120.0, y = 0.0, z = 0.0 },
+                }, function() -- Play When Done
+                    local plate = QBCore.Functions.GetPlate(vehicle)
+                    TriggerServerEvent("police:server:Impound", plate, fullImpound, price, bodyDamage, engineDamage, totalFuel)
+                    while NetworkGetEntityOwner(vehicle) ~= 128 do  -- Ensure we have entity ownership to prevent inconsistent vehicle deletion
+                        NetworkRequestControlOfEntity(vehicle)
+                        Wait(100)
+                    end
+                    QBCore.Functions.DeleteVehicle(vehicle)
+                    -- TriggerEvent('QBCore:Notify', Lang:t('success.impounded'), 'success')
                     ClearPedTasks(ped)
                 end, function() -- Play When Cancel
                     ClearPedTasks(ped)
@@ -1073,29 +1139,31 @@ CreateThread(function()
     end)
 
     -- Police Impound
-    local impoundZones = {}
-    for _, v in pairs(Config.Locations["impound"]) do
-        impoundZones[#impoundZones+1] = BoxZone:Create(
-            vector3(v.x, v.y, v.z), 1, 1, {
-            name="box_zone",
-            debugPoly = false,
-            minZ = v.z - 1,
-            maxZ = v.z + 1,
-            heading = 180,
-        })
-    end
+    CreateThread(function()
 
-    local impoundCombo = ComboZone:Create(impoundZones, {name = "impoundCombo", debugPoly = false})
-    impoundCombo:onPlayerInOut(function(isPointInside, point)
-        if isPointInside then
-            inImpound = true
-            if PlayerJob.name == 'police' and PlayerJob.onduty then
-                if IsPedInAnyVehicle(PlayerPedId(), false) then
+        -- Police Impound
+        local impoundZones = {}
+        for _, v in pairs(Config.Locations["impound"]) do
+            impoundZones[#impoundZones+1] = BoxZone:Create(
+                vector3(v.x, v.y, v.z), 4, 4, {
+                name="box_zone",
+                debugPoly = false,
+                minZ = v.z - 1,
+                maxZ = v.z + 1,
+                heading = 180,
+            })
+        end
+    
+        local impoundCombo = ComboZone:Create(impoundZones, {name = "impoundCombo", debugPoly = false})
+        impoundCombo:onPlayerInOut(function(isPointInside, point)
+            if isPointInside then
+                inImpound = true
+                if PlayerJob.type == "leo" and PlayerJob.onduty and IsPedInAnyVehicle(PlayerPedId(), false) then
                     exports['qb-core']:DrawText(Lang:t('info.impound_veh'), 'left')
                     impound()
                 else
                     local currentSelection = 0
-
+    
                     for k, v in pairs(Config.Locations["impound"]) do
                         if #(point - vector3(v.x, v.y, v.z)) < 4 then
                             currentSelection = k
@@ -1113,12 +1181,12 @@ CreateThread(function()
                         }
                     })
                 end
+            else
+                inImpound = false
+                exports['qb-menu']:closeMenu()
+                exports['qb-core']:HideText()
             end
-        else
-            inImpound = false
-            exports['qb-menu']:closeMenu()
-            exports['qb-core']:HideText()
-        end
+        end)
     end)
 
     -- Police Garage

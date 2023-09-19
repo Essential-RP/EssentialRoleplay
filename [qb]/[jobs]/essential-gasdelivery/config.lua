@@ -17,6 +17,12 @@ Config.VehicleKeys = 'qb-vehiclekeys' -- qb-vehiclekeys or mk_vehiclekeys
 
 Config.TruckToSpawn = "packer" -- Vehicle MUST be able to pull a large trailer. 
 
+Config.tankerCoords = {
+    vector3(1737.1252441406, -1537.6116943359, 112.68978118896),
+    vector3(1744.9931640625, -1509.5534667969, 112.82014465332),
+    vector3(1748.9940185547, -1498.0612792969, 112.8011932373)
+}
+
 Config.TrailerToSpawn = "tanker2" -- Must be a tanker variant, or else the rope will not place in the right position. If this does not bother you, then change to your liking.
 
 Config.PayPerFueling = math.random(450, 600) -- This is multiplied by the amount of refuels the player does. So if they refuel 5 stations, they will get 5*math.random
@@ -25,7 +31,7 @@ Config.FuelScript = 'cdn-fuel' -- cdn-fuel or ps-fuel or LegacyFuel
 
 Config.PayType = 'bank' -- Where does the money come from? bank or cash
 
-Config.TruckPrice = 5000 -- Cost of the vehicle to pull out
+Config.TruckPrice = 500 -- Cost of the vehicle to pull out
 
 Config.MaxFuelDeliveries = 5 -- Maximum amount of deliveries before they need to return and refuel
 

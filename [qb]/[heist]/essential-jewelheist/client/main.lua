@@ -495,7 +495,7 @@ end)
         -- Check for HackCooldown here
         QBCore.Functions.TriggerCallback("essential-jewelheistcustom:server:Cooldown", function(HackCoolDown)
           if HackCoolDown then
-            QBCore.Functions.Notify("Hack is on cooldown!", "error", 5000)
+            QBCore.Functions.Notify("Somebody Hacked This Recently. Come Back Later!", "error", 5000)
           else
             local thermTab = not door and Config.Stores[store]['Thermite'].Main or Config.Stores[store]['Thermite'].Sec
             QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)

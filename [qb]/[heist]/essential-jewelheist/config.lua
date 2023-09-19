@@ -9,7 +9,7 @@ Config.RequiredCops = 0
 
 Config.VangelicoHours = { -- Store Hours
   range = { -- Set both to 0 if you want the store to be robbed 24/7
-    open = 6, -- When the doors unlock // Default 6am
+    open = 17, -- When the doors unlock // Default 6am
     close = 18 -- When they lock for the night // Default 6pm
   },
   alertnight = {

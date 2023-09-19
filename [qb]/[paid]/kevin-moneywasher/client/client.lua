@@ -48,35 +48,42 @@ CreateThread(function()
 end)
 
 RegisterNetEvent('kevin-moneywasher:startrun', function ()
-    if Config.Phone == 'qb' then
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = "Unknown",
-            subject = 'Information',
-            message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.',
-        })
-    elseif Config.Phone == 'gks' then
-        TriggerServerEvent('gksphone:NewMail', {
-            sender = 'Unknown',
-            image = '/html/static/img/icons/mail.png',
-            subject = "Information",
-            message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.'
-        })
-    elseif Config.Phone == 'qs' then
-        TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-            sender = 'Unknown',
-            subject = 'Information',
-            message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.',
-            button = {}
-        })
-    end
-    Washing = true
-    WasherID = math.random(1, 99999)
-    CreateMeetBlip()
-    exports["ps-zones"]:CreateCircleZone("Washer-MeetLocation", WasherPedLocation, 100.0, {
-        debugPoly = false,
-        minZ = WasherPedLocation.z - 1,
-        maxZ = WasherPedLocation.z + 1,
-    })
+    QBCore.Functions.TriggerCallback("kevin-moneywasher:server:Cooldown", function(cooldown)
+        if cooldown then
+            QBCore.Functions.Notify("Someone did this recently. Come back later!", "error", 5000)
+        else
+            if Config.Phone == 'qb' then
+                TriggerServerEvent('qb-phone:server:sendNewMail', {
+                    sender = "Unknown",
+                    subject = 'Information',
+                    message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.',
+                })
+            elseif Config.Phone == 'gks' then
+                TriggerServerEvent('gksphone:NewMail', {
+                    sender = 'Unknown',
+                    image = '/html/static/img/icons/mail.png',
+                    subject = "Information",
+                    message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.'
+                })
+            elseif Config.Phone == 'qs' then
+                TriggerServerEvent('qs-smartphone:server:sendNewMail', {
+                    sender = 'Unknown',
+                    subject = 'Information',
+                    message = 'There are a few people we trust when it comes to washing. Meet up with them and give them what you got, they will be expecting you.',
+                    button = {}
+                })
+            end
+            Washing = true
+            WasherID = math.random(1, 99999)
+            TriggerServerEvent('kevin-moneywasher:server:setcooldown')
+            CreateMeetBlip()
+            exports["ps-zones"]:CreateCircleZone("Washer-MeetLocation", WasherPedLocation, 100.0, {
+                debugPoly = false,
+                minZ = WasherPedLocation.z - 1,
+                maxZ = WasherPedLocation.z + 1,
+            })
+        end
+    end)
 end)
 
 function CreateMeetBlip()

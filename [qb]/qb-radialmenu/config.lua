@@ -462,6 +462,14 @@ Config.JobInteractions = {
         icon = 'tasks',
         items = {
             {
+                id = 'Seize',
+                title = 'Seize Vehicle',
+                icon = 'car',
+                type = 'client',
+                event = 'police:client:SeizeVehicle',
+                shouldClose = true
+            },
+            {
                 id = 'statuscheck',
                 title = 'Check Health Status',
                 icon = 'heartbeat',

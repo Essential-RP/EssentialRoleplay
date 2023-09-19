@@ -15,6 +15,7 @@ QBShared.Jobs = {
             },
         },
 	},
+   
 	['police'] = {
 		label = 'Law Enforcement',
         type = "leo",

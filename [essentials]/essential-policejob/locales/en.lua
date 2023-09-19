@@ -48,6 +48,7 @@ local Translations = {
         mr = 'Mr.',
         mrs = 'Mrs.',
         tow_vehicle = 'Impound Vehicle',
+        seize_vehicle = 'Seize Vehicle',
         impound_price = 'Price the player pays to get vehicle out of impound (can be 0)',
         plate_number = 'License Plate Number',
         flag_reason = 'Reason for flagging vehicle',
@@ -189,6 +190,7 @@ local Translations = {
         place_object = 'Placing object..',
         remove_object = 'Removing object..',
         impound = 'Impounding Vehicle..',
+        seize = 'Seizing Vehicle..',
     },
 }
 

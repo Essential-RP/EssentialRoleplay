@@ -18,6 +18,8 @@ Config.HandCuffItem = 'handcuffs'
 
 Config.LicenseRank = 2
 
+Config.FuelScript = 'cdn-fuel'
+
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 Config.Locations = {
     ["duty"] = {
@@ -33,7 +35,7 @@ Config.Locations = {
         -- [1] = vector3(453.075, -980.124, 30.889),
     },
     ["impound"] = {
-        [1] = vector3(436.68, -1007.42, 27.32),
+        [1] = vector3(478.20693969727, -1019.9604492188, 27.992244720459),
         [2] = vector3(-436.14, 5982.63, 31.34),
     },
     ["helicopter"] = {

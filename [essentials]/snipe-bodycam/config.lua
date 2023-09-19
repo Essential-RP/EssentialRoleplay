@@ -71,7 +71,7 @@ Config.BodyCamCommand = "bodycam" -- command to access the active bodycams
 Config.JobWithAccess = { 
     ["police"] = { -- job name who can wear bodycams
         ["ui_label"] = "LSPD", -- label to show on the bodycam UI
-        ["ui_image"] = "https://cdn.discordapp.com/attachments/1016664389857837166/1151019697282760714/lspd.png", -- image to show on the bodycam UI
+        ["ui_image"] = "https://cdn.discordapp.com/attachments/1076279342931390524/1153545085762408538/AXON-LOGO.png", -- image to show on the bodycam UI
     },
     ["ambulance"] = {
         ["ui_label"] = "Ambulance",

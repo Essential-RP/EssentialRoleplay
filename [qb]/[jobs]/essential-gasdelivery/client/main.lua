@@ -142,16 +142,35 @@ AddEventHandler("spawnTruck", function()
         StoredTruck = NetworkGetEntityFromNetworkId(TruckNetID)
     end, coords, heading, true, true)
 
+    local heading1 = 246
+    local randomIndex = math.random(1, #Config.tankerCoords) -- Choose a random index
+    
+    local chosenTanker = Config.tankerCoords[randomIndex] -- Get the random coordinate
+    
     QBCore.Functions.SpawnVehicle(Config.TrailerToSpawn, function(veh1)
-        DeleteVehicle(StoredTrailer)
-        TrailerNetID = NetworkGetNetworkIdFromEntity(veh1)
-        print("trailer ID: "..TrailerNetID)
+        -- Delete the previous StoredTrailer if needed
+        if StoredTrailer then
+            DeleteVehicle(StoredTrailer)
+        end
+    
+        local TrailerNetID = NetworkGetNetworkIdFromEntity(veh1)
+        print("Trailer ID: " .. TrailerNetID)
         SetVehicleNumberPlateText(veh1, 'TRUCKER')
         SetEntityHeading(veh1, heading)
-
+    
         StoredTrailer = NetworkGetEntityFromNetworkId(TrailerNetID)
-    end, tankerCoords, heading, true, true)
-end)
+    
+        -- Add a blip for the spawned trailer
+        local blip = AddBlipForEntity(StoredTrailer)
+        SetBlipSprite(blip, 479)
+        SetBlipColour(blip, 3)
+        SetBlipScale(blip, 1.0)
+        SetBlipRoute(blip, true)
+        SetBlipFlashes(blip, false)
+    
+        -- Notify the player
+        QBCore.Functions.Notify('Go get your tanker!', 'success', 5000)
+    end, chosenTanker, heading1, true, true)
 
 RegisterNetEvent('essential-jobtablet:jobcenter:gasdelivery', function()
     SetNewWaypoint(1721.9868164063, -1557.7171630859)
@@ -159,14 +178,14 @@ end)
 
 --/////////////////////////////////////////////////////////////////////////////////////////////////--
 
-RegisterNetEvent('TrailerBlip', function()
-    blip = AddBlipForCoord(1736.51, -1530.79, 112.66)
-    SetBlipSprite(blip, 1)
-    SetBlipColour(blip, 5)
-    SetBlipScale(blip, 1.0)
-    SetBlipRoute(blip, true)
-    SetBlipFlashes(blip, true)
-    QBCore.Functions.Notify('Go get your tanker!', 'success', 5000)
+-- RegisterNetEvent('TrailerBlip', function()
+--     blip = AddBlipForCoord(1736.51, -1530.79, 112.66)
+--     SetBlipSprite(blip, 479)
+--     SetBlipColour(blip, 3)
+--     SetBlipScale(blip, 1.0)
+--     SetBlipRoute(blip, true)
+--     SetBlipFlashes(blip, false)
+--     QBCore.Functions.Notify('Go get your tanker!', 'success', 5000)
 
     Citizen.CreateThread(function()
         while true do

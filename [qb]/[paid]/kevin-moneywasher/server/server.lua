@@ -1,4 +1,5 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local cooldown = false
 
 function GetWasherItems(WasherID)
 	local items = {}
@@ -67,4 +68,25 @@ RegisterNetEvent('kevin-moneywasher:server:collectbills', function (Cleaned)
 		TriggerEvent('qb-log:server:CreateLog', 'washer', 'Money Washer', 'green', "**"..GetPlayerName(Player.PlayerData.source) .. " (citizenid: "..Player.PlayerData.citizenid.." | id: "..Player.PlayerData.source..")** Gave washer bills worth: "..Cleaned.. " | Collected Amount :"..math.floor(Money)..' | Location :'..PlayerCoords)
 		TriggerClientEvent('kevin-moneywasher:client:removeped', PlayerId)
 	end
+end)
+
+
+RegisterServerEvent('kevin-moneywasher:server:setcooldown', function()
+	cooldown = true
+	local timer = Config.Cooldown * (60 * 1000)
+	while timer > 0 do
+		Wait(1000)
+		timer = timer - 1000
+		if timer == 0 then
+		  cooldown = false
+		end
+	end
+  end)
+
+QBCore.Functions.CreateCallback("kevin-moneywasher:server:Cooldown",function(source, cb)
+    if cooldown then
+        cb(true)
+    else
+        cb(false)
+    end
 end)

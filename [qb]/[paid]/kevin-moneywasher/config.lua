@@ -2,6 +2,7 @@ Config = Config or {}
 
 Config.Dispatch = 'ps' -- ps = ps-dispatch, cd = cd_dispatch
 Config.Phone = 'qb' -- qb / gks / qs
+Config.Cooldown = 1
 Config.AlertChance = 30 -- 30% chance police notidied
 Config.PercentageGiven = 0.7 -- (70%) this is a percentage of the total money that will be given back to the player
 Config.UseSetAmount = false -- if set to true it would use the set amount in the table below "setamountworth" if set to false it would use the worth of the item given from whatever script that gives you the bills
@@ -53,5 +54,5 @@ vector4(-3171.1318359375, 1100.9102783203, 20.736005783081, 65.613700866699),
 } 
 Config.Vehicles = { --vehicles the ped's in add as many as you like
     `sultan`,
-    `kuruma`
+    `kuruma`,
 }
