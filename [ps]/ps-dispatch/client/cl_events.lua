@@ -1,12 +1,8 @@
 local WeaponTable = {
     [584646201]   = "CLASS 2: AP-Pistol",
     [453432689]   = "CLASS 1: Pistol",
-    [GetHashKey("weapon_glock17")] = "CLASS 1: PD Glock",
     [1593441988]  = "CLASS 1: Combat Pistol",
-    [GetHashKey("weapon_heavypistol")] = "CLASS 1: Heavy Pistol",
-    [GetHashKey("weapon_fnx45")] = "CLASS 1: FN .45",
     [-1076751822] = "CLASS 1: SNS-Pistol",
-    [GetHashKey("weapon_pistol50")]  = "CLASS 2: Desert Eagle",
     [137902532]   = "CLASS 2: Vintage Pistol",
     [-598887786]  = "CLASS 2: Marksman Pistol",
     [-1045183535] = "CLASS 2: Revolver",
@@ -44,6 +40,13 @@ local WeaponTable = {
     [-1568386805] = "CLASS 5: GRENADE LAUNCHER",
     [-1312131151] = "CLASS 5: RPG",
     [125959754]   = "CLASS 5: Compactlauncher"
+    
+    --<!>-- Essential Weapons --<!>--
+    [GetHashKey('weapon_m9')]           = 'CLASS 1: Beretta M9',
+    [GetHashKey('weapon_fnx45')]        = 'CLASS 1: FN FNX-45',
+    [GetHashKey('weapon_browning')]     = 'CLASS 1: Browning',
+    [GetHashKey('weapon_l5')]           = 'CLASS 1: Desert Eagle',
+    [GetHashKey('weapon_springfield')]  = 'CLASS 1: Springfield 1911',
 }
 local function VehicleTheft(vehicle)
     local vehdata = vehicleData(vehicle)

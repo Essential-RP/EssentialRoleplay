@@ -74,8 +74,8 @@ local weapons = {
 	'WEAPON_M6IC',
 	--Custom Weapon
 	'WEAPON_AK47',
-	'WEAPON_M9',
-	'WEAPON_FNX45',
+	-- 'WEAPON_M9',
+	-- 'WEAPON_FNX45',
 	'WEAPON_DE',
 	'WEAPON_GLOCK17',
 	'WEAPON_M4',
@@ -102,6 +102,13 @@ local weapons = {
 	'WEAPON_GLOCK22',
 	'WEAPON_AKS74',
 	'WEAPON_AK74',
+
+  --<!>-- Essential Weapons --<!>--
+	'WEAPON_M9',
+    'WEAPON_FNX45',
+    'WEAPON_BROWNING',
+    'WEAPON_L5',
+    'WEAPON_SPRINGFIELD',
 }
 
 -- Wheapons that require the Police holster animation
