@@ -66,6 +66,10 @@ Config.Props = {
     model = "imp_prop_impexp_mechbench",
     coords = vector4(-448.06329345703, -2182.0815429688, 10.318192481995, 90.15737915039 ),        
     }, 
+    [16] = {     -- Delete this prop and replace it with what you like.
+    model = "hei_prop_hei_securitypanel",
+    coords = vector4(-2436.6264648438, 3337.3212890625, 40.93959, 64.8179473877),        
+    }, 
     -- [15] = {     -- Delete this prop and replace it with what you like.
     -- model = "gr_prop_gr_bench_04b",
     -- coords = vector4(-564.46911621094, -1622.3951416016, 27.01079750061, 86.401306152344),

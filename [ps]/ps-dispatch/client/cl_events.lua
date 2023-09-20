@@ -39,8 +39,8 @@ local WeaponTable = {
     [317205821]   = "CLASS 2: Autoshotgun",
     [-1568386805] = "CLASS 5: GRENADE LAUNCHER",
     [-1312131151] = "CLASS 5: RPG",
-    [125959754]   = "CLASS 5: Compactlauncher"
-    
+    [125959754]   = "CLASS 5: Compactlauncher",
+
     --<!>-- Essential Weapons --<!>--
     [GetHashKey('weapon_m9')]           = 'CLASS 1: Beretta M9',
     [GetHashKey('weapon_fnx45')]        = 'CLASS 1: FN FNX-45',

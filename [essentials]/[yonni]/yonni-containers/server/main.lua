@@ -40,6 +40,14 @@ RegisterNetEvent("yonni-containers:server:success",function()
     Player.Functions.AddMoney('cash', math.random(Config.PaymentMin, Config.PaymentMax))
 end)
 
+RegisterNetEvent("yonni-containers:server:containerrewards",function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    
+    Player.Functions.AddItem(Config.ContainerItems, 1, false)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.ContainerItems], "add", 1)
+end)
+
 RegisterNetEvent('yonni-containers:server:success2', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)

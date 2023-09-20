@@ -31,14 +31,56 @@ end
 
 RegisterNetEvent('yonni-container:client:hacksuccess')
 AddEventHandler('yonni-container:client:hacksuccess', function()
-    QBCore.Functions.Notify("You did it! Now Grab the rewards and get out of here!")
+    QBCore.Functions.Notify("You did it! Now grab the rewards and get out of here!")
     ClearPedTasksImmediately(PlayerPedId())
     TriggerEvent("yonni-container:client:robanim")
     DispatchCalled()
     Citizen.Wait(7500)
     TriggerServerEvent('yonni-containers:server:timer')
+    -- Add the export target for the container here
+    local hasTriggeredEvent = false -- Initialize a variable to track whether the event has been triggered
+
+    exports['qb-target']:AddBoxZone('container2', vector3(-2447.36, 3343.14, 32.83), 0.4, 0.8, {
+        name = "container2",
+        heading = 335,
+        minZ = 30.63,
+        maxZ = 34.63
+    }, {
+        options = {
+            {
+                icon = 'fas fa-mask',
+                label = 'Grab Rewards',
+                action = function()
+                    if hasTriggeredEvent then
+                        QBCore.Functions.Notify("Quit trying to be sneaky!", 'error')
+                    elseif QBCore.Functions.HasItem(Config.RewardCard) then
+                        TriggerEvent('yonni-container:client:giverewards')
+                        hasTriggeredEvent = true -- Mark the event as triggered
+                    else
+                        QBCore.Functions.Notify("You need the card I gave you to do this!", 'error')
+                    end
+                end,
+                canInteract = function()
+                    return true -- Always allow interaction to check the target
+                end
+            }
+        },
+        distance = 2.5 -- This is the distance for you to be at for the target to turn blue; this is in GTA units and has to be a float value
+    })
 end)
 
+-- RegisterNetEvent('yonni-container:client:keycontainer')
+-- AddEventHandler('yonni-container:client:keycontainer', function()
+--    local ped = PlayerPedId()
+
+-- end)
+RegisterNetEvent('yonni-container:client:giverewards')
+AddEventHandler('yonni-container:client:giverewards', function()
+    QBCore.Functions.Notify("Take This...", 'success')
+    TriggerServerEvent('yonni-containers:server:containerrewards')
+    -- TriggerServerEvent('essential-atmrobbery:server:giveitemback')
+    -- DispatchCalled()
+end)
 
 RegisterNetEvent('yonni-container:client:hackfailed')
 AddEventHandler('yonni-container:client:hackfailed', function()
@@ -88,9 +130,10 @@ AddEventHandler('yonni-container:client:robanim', function()
     StopParticleFxLooped(effect, 0)
     DeleteObject(thermal_charge)
     if Config.MoneyType == true then
+        exports['qb-target']:RemoveZone("container1")
         TriggerServerEvent("yonni-containers:server:success")
     else
-        -- TriggerServerEvent("yonni-containers:server:success2")
+        TriggerServerEvent("yonni-containers:server:success2")
     end
 end)
 
