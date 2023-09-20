@@ -75,24 +75,22 @@ AddEventHandler('yonni-container:client:robanim', function()
     local effect = StartParticleFxLoopedAtCoord('scr_heist_ornate_thermal_burn', termcoords.x, termcoords.y + 1.0, termcoords.z, 0, 0, 0, 0x3F800000, 0, 0, 0, 0)
     -- QBCore.Functions.Notify("Might want to move for this!...", 'error')
     Wait(3000)
-    for _, container in ipairs(Config.Containers) do
-        local x = container.coords.x -- X-coordinate where the explosion occurs
-        local y = container.coords.y -- Y-coordinate where the explosion occurs
-        local z = container.coords.z -- Z-coordinate where the explosion occurs
-        local explosionType = 1 -- Replace with the appropriate explosion type (1 for default explosion)
-        local damageScale = 2.0 -- Adjust the damage scale as needed (1.0 for normal damage)
-        local isAudible = true -- Set to true if the explosion should be audible
-        local isInvisible = false -- Set to false if the explosion should be visible
-        local cameraShake = 5.0 -- Adjust the camera shake intensity as needed
+    local x = -2447.8142089844 -- X-coordinate where the explosion occurs
+    local y = 3343.3254394531  -- Y-coordinate where the explosion occurs
+    local z = 32.82719039917   -- Z-coordinate where the explosion occurs
+    local explosionType = 1 -- Replace with the appropriate explosion type (1 for default explosion)
+    local damageScale = 2.0 -- Adjust the damage scale as needed (1.0 for normal damage)
+    local isAudible = true -- Set to true if the explosion should be audible
+    local isInvisible = false -- Set to false if the explosion should be visible
+    local cameraShake = 5.0 -- Adjust the camera shake intensity as needed
 
-        AddExplosion(x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake)
-        StopParticleFxLooped(effect, 0)
-        DeleteObject(thermal_charge)
-        if Config.MoneyType == true then
-            TriggerServerEvent("yonni-containers:server:success")
-        else
-            TriggerServerEvent("yonni-containers:server:success2")
-        end
+    AddExplosion(x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake)
+    StopParticleFxLooped(effect, 0)
+    DeleteObject(thermal_charge)
+    if Config.MoneyType == true then
+        TriggerServerEvent("yonni-containers:server:success")
+    else
+        -- TriggerServerEvent("yonni-containers:server:success2")
     end
 end)
 
@@ -141,35 +139,31 @@ end)
 --Container Locations
 
 if Config.Framework == 'QBCore' then
-    for k, v in pairs(Config.Containers) do
-        local containerName = 'container' .. k -- Unique name for each container
-
-        exports['qb-target']:AddBoxZone(containerName, v.coords, 0.4, 0.8, {
-            name = containerName,
-            heading = 40,
-            minZ = v.coords.z - 1,
-            maxZ = v.coords.z + 1,
-        }, {
+    exports['qb-target']:AddBoxZone('container1', vector3(-2447.36, 3343.14, 32.83), 0.4, 0.8, {
+        name="container1",
+        heading=335,
+        minZ=30.63,
+        maxZ=34.63
+          }, {
             options = {
                 {
-                    icon = 'fas fa-mask',
-                    label = 'Blow Up Container',
-                    action = function()
-                        if QBCore.Functions.HasItem(Config.HackingItem.sb) and QBCore.Functions.HasItem(Config.HackingItem.lt) then
-                            TriggerEvent('yonni-containers:startrob')
-                        else
-                            QBCore.Functions.Notify("You're missing items, silly!", 'error')
-                        end
-                    end,
-                    canInteract = function()
-                        return true -- Always allow interaction to check the target
+                  icon = 'fas fa-mask',
+                  label = 'Blow Up Container',
+                  action = function()
+                    if QBCore.Functions.HasItem(Config.HackingItem.sb) and QBCore.Functions.HasItem(Config.HackingItem.lt) then
+                      TriggerEvent('yonni-containers:startrob')
+                    else
+                      QBCore.Functions.Notify("Your missing items silly!", 'error')
                     end
+                  end,
+                  canInteract = function()
+                    return true -- Always allow interaction to check the target
+                  end
                 }
-            },
-            distance = 2.5 -- This is the distance for you to be at for the target to turn blue; this is in GTA units and has to be a float value
-        })
-    end
-end
+              },
+              distance = 2.5 -- This is the distance for you to be at for the target to turn blue; this is in GTA units and has to be a float value
+            })
+          end
     --       options = {
     --           { 
     --               type = 'client',
