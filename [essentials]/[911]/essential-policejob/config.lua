@@ -77,7 +77,7 @@ Config.AuthorizedJobs = {
     ['troopers'] = {
         color = 0
     },
-    ['rangers'] = {
+    ['sast'] = {
         color = 2
     },
     ['ambulance'] = {

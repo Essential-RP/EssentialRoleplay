@@ -524,7 +524,7 @@ Config.Locations = {
             text = "MRPD Motorworks",
         },
         restrictions = {
-            job = { 'police', 'bcso', 'sasp' },
+            job = { 'police', 'bcso', 'troopers' },
             allowedClasses = { 18 },
         },
         zones = {

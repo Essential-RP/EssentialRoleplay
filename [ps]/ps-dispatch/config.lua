@@ -10,7 +10,7 @@ Config.Locale = 'en'
 Config.RespondsKey = "E"
 
 -- Enable if you only want to send alerts to onDuty officers
-Config.OnDutyOnly = false
+Config.OnDutyOnly = true
 
 Config.PhoneModel = 'prop_npc_phone_02'
 
@@ -48,7 +48,7 @@ Config.Locations = {
 
 Config.AuthorizedJobs = {
     LEO = { -- this is for job checks which should only return true for police officers
-        Jobs = {['police'] = true, ['fib'] = true, ['sheriff'] = true},
+        Jobs = {['police'] = true, ['sast'] = true, ['sheriff'] = true},
         Types = {['police'] = true, ['leo'] = true},
         Check = function(PlyData)
             PlyData = PlyData or QBCore.Functions.GetPlayerData()

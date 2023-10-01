@@ -133,7 +133,7 @@ Config = {
 									-- Lowering this will most likely add load on to the server database
 	},
 	Odometer = {
-		ShowOdo = true, 			-- Wether the distance is showed in car by default
+		ShowOdo = false, 			-- Wether the distance is showed in car by default
 		OdoLocation  = "bottom-right", 	-- Where the Odometer will show,
 										-- "left", "right", "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right"
 		OdoShowIcons = true, 		-- Enable this to allow the use of the warning icons on the odometer
