@@ -8,7 +8,6 @@ local Translations = {
         weapon_broken = 'This weapon is broken and can not be used.',
         no_damage_on_weapon = 'This weapon is not damaged..',
         weapon_broken_need_repair = 'Your weapon is broken, you need to repair it before you can use it again.',
-        attachment_broken = '%{value} is broken, you need to remove it for your weapon to work again.',
         attachment_already_on_weapon = 'You already have a %{value} on your weapon.'
     },
     success = {
@@ -16,15 +15,12 @@ local Translations = {
     },
     info = {
         loading_bullets = 'Loading Bullets',
-        repairshop_not_usable = 'Someone else\'s weapon is here',
+        repairshop_not_usable = 'The repairshop in this moment is ~r~NOT~w~ usable.',
         weapon_will_repair = 'Your weapon will be repaired.',
-        take_weapon_back = 'Took back weapon',
-        take_weapon_nil = 'Finders keepers...',
-        repair_weapon_price = 'Cost for repair, $%{value}',
+        take_weapon_back = '[E] - Take Weapon Back',
+        repair_weapon_price = '[E] Repair Weapon, ~g~$%{value}~w~',
         removed_attachment = 'You removed %{value} from your weapon!',
-        hp_of_weapon = 'Durability of your weapon',
-        weapon_repair_started = 'Started Repair!',
-        not_enough_cash = 'Not enough cash!',
+        hp_of_weapon = 'Durability of your weapon'
     },
     mail = {
         sender = 'Tyrone',

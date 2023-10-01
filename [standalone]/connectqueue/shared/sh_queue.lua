@@ -19,6 +19,7 @@ Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or 
 Queue.InitHostName = GetConvar("sv_hostname")
 
 
+
 -- This is needed because msgpack will break when tables are too large
 local _Queue = {}
 _Queue.QueueList = {}
@@ -58,6 +59,8 @@ function Queue:DebugPrint(msg)
         print(msg)
     end
 end
+
+
 
 function Queue:HexIdToSteamId(hexId)
     local cid = math_floor(tonumber(string_sub(hexId, 7), 16))
@@ -185,15 +188,16 @@ function Queue:HasTempPriority(ids)
     return false
 end
 
-function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
+function Queue:AddToQueue(ids, connectTime, name, src, deferrals,point,roleStrings)
     if Queue:IsInQueue(ids) then return end
-
     local tmp = {
         source = src,
         ids = ids,
         name = name,
         priority = Queue:IsPriority(ids) or (src == "debug" and math_random(0, 15)),
         timeout = 0,
+        point = point,
+        roleStrings = roleStrings,
         deferrals = deferrals,
         firstconnect = connectTime,
         queuetime = function() return (os_time() - connectTime) end
@@ -202,29 +206,39 @@ function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
     local _pos = false
     local queueCount = Queue:GetSize() + 1
     local queueList = Queue:GetQueueList()
-
-    for pos, data in ipairs(queueList) do
-        if tmp.priority then
-            if not data.priority then
-                _pos = pos
-            else
-                if tmp.priority > data.priority then
-                    _pos = pos
-                end
+    if Config.enableDiscordWhitelist then
+        local tempPos = 0
+        for pos, data in ipairs(queueList) do
+            
+            if data.point >= point then
+                _pos = pos+1
             end
-
-            if _pos then
-                Queue:DebugPrint(string_format("%s[%s] was prioritized and placed %d/%d in queue", tmp.name, ids[1], _pos, queueCount))
-                break
+        end
+    else
+        for pos, data in ipairs(queueList) do
+            if tmp.priority then
+                if not data.priority then
+                    _pos = pos
+                else
+                    if tmp.priority > data.priority then
+                        _pos = pos
+                    end
+                end
+                
+    
+                if _pos then
+                    Queue:DebugPrint(string_format("%s[%s] was prioritized and placed %d/%d in queue", tmp.name, ids[1], _pos, queueCount))
+                    break
+                end
             end
         end
     end
+    
 
     if not _pos then
         _pos = Queue:GetSize() + 1
         Queue:DebugPrint(string_format("%s[%s] was placed %d/%d in queue", tmp.name, ids[1], _pos, queueCount))
     end
-
     table_insert(queueList, _pos, tmp)
 end
 
@@ -413,8 +427,10 @@ end
 
 function Queue:CanJoin(src, cb)
     local allow = true
-
+    
     for _, data in ipairs(_Queue.JoinCbs) do
+        print(data)
+        print("Hello")
         local await = true
 
         data.func(src, function(reason)
@@ -447,9 +463,9 @@ local function playerConnect(name, setKickReason, deferrals)
     local name = GetPlayerName(src)
     local connectTime = os_time()
     local connecting = true
-
     deferrals.defer()
-	
+    local point = 0
+    local RoleStrings = ""
 	if Config.AntiSpam then
 		for i=Config.AntiSpamTimer,0,-1 do
 			deferrals.update(string.format(Config.PleaseWait, i))
@@ -499,6 +515,57 @@ local function playerConnect(name, setKickReason, deferrals)
         Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
         return
     end
+    local currentDiscordID = ""
+    for k, v in ipairs(ids) do
+        if string.sub(v, 1, string.len("discord:")) == "discord:" then
+            currentDiscordID = v
+        end
+    end
+    
+    -- print(enableDiscordWhitelist)
+    if Config.enableDiscordWhitelist then
+        if Config.enableDiscordWhitelist and currentDiscordID == "" then
+            -- prevent joining
+            done(Config.Language.whitelist.noDiscord)
+            CancelEvent()
+            Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve Discord id")
+            return
+            
+        else
+            
+            deferrals.update(Config.Language.whitelist.checkingRoles)
+            -- deferrals.update(Config.Language..connecting)
+            PerformHttpRequest("https://discord.com/api/v9/guilds/"..Config.discordServerGuild.."/members".."/"..string.sub(currentDiscordID, 9), function (errorCode, rdata, resultHeaders)
+                local res=json.decode(rdata)
+                if errorCode == 200 then
+                    local roles = json.encode(res.roles)
+    
+                    for key, roleData in pairs(Config.Roles) do
+                        if string.find(roles,roleData.roleID) then
+                            print(roleData.point)
+                            point = point + roleData.point
+                            RoleStrings = RoleStrings .. key .." ,"
+                        end
+                    end
+    
+                end
+            end, "GET", "", {["Content-type"] = "application/json", ["Authorization"] = "Bot " .. Config.discordBotToken})
+            Wait(1000)
+    
+            
+            print(point)
+            if point > 0 then
+                connecting = false
+                deferrals.update(Config.Language.whitelist.checkingQueue)
+    
+            else
+                done(Config.Language.whitelist.noRole)
+                CancelEvent()
+                return 
+            end
+        end
+    end
+
 
     if Config.RequireSteam and not Queue:IsSteamRunning(src) then
         -- prevent joining
@@ -512,6 +579,7 @@ local function playerConnect(name, setKickReason, deferrals)
     Queue:CanJoin(src, function(reason)
         if reason == nil or allow ~= nil then return end
         if reason == false or #_Queue.JoinCbs <= 0 then allow = true return end
+        
 
         if reason then
             -- prevent joining
@@ -541,7 +609,7 @@ local function playerConnect(name, setKickReason, deferrals)
             -- let them in the server
 
             if not Queue:IsInQueue(ids) then
-                Queue:AddToQueue(ids, connectTime, name, src, deferrals)
+                Queue:AddToQueue(ids, connectTime, name, src, deferrals,point,RoleStrings)
             end
 
             local added = Queue:AddToConnecting(ids, true, true, done)
@@ -559,7 +627,7 @@ local function playerConnect(name, setKickReason, deferrals)
         Queue:UpdatePosData(src, ids, deferrals)
         Queue:DebugPrint(string_format("%s[%s] has rejoined queue after cancelling", name, ids[1]))
     else
-        Queue:AddToQueue(ids, connectTime, name, src, deferrals)
+        Queue:AddToQueue(ids, connectTime, name, src, deferrals,point,RoleStrings)
 
         if rejoined then
             Queue:SetPos(ids, 1)
@@ -749,10 +817,53 @@ AddEventHandler("onResourceStop", function(resource)
 end)
 
 if Config.DisableHardCap then
+    local announce=false
     Queue:DebugPrint("^1 [connectqueue] Disabling hardcap ^7")
 
     AddEventHandler("onResourceStarting", function(resource)
         if resource == "hardcap" then CancelEvent() return end
+
+        if Config.enableDiscordWhitelist then
+            PerformHttpRequest("https://discord.com/api/v9/guilds/"..Config.discordServerGuild, function (errorCode, resultData, resultHeaders)
+                if errorCode == 200 then
+                    PerformHttpRequest("https://discord.com/api/v9/guilds/"..Config.discordServerGuild.."/preview", function (errorCode, rdata, resultHeaders)
+                        local res=json.decode(rdata)
+                        if errorCode == 200 then
+                            if not announce then
+                                announce=true
+                            print('^6 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n  Bot Connect To '..res.name..' Server  \n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                            end
+                        elseif errorCode == 403 then
+                            if not announce then
+                                announce=true
+                                print('^1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxx Please Invite / ReInvite Bot xxxxxxxxxxxxxx \n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                            end
+                        elseif errorCode == 401 then
+                            if not announce then
+                                announce=true
+                                print('^1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxx Please Check Discord Token xxxxxxxxxxxxxx\n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                            end
+                        end
+                      end, "GET", "", {["Content-type"] = "application/json", ["Authorization"] = "Bot " .. Config.discordBotToken})
+                elseif errorCode == 403 then
+                    if not announce then
+                        announce=true
+                        print('^1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxx Please Invite/ReInvite Bot xxxxxxxxxxxxxx \n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                    end
+                elseif errorCode == 401 then
+                    if not announce then
+                        announce=true
+                        print('^1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxxxxxxxx Please Check Discord Token xxxxxxxxxxxxxx\n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                    end
+                else
+                    if not announce then
+                        announce=true
+                        print('^1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \n xxxxxxxx Please Check Discord Token and Guild ID xxxxxxxx\n xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                    end
+
+                end
+              end, "GET", "", {["Content-type"] = "application/json", ["Authorization"] = "Bot " .. Config.discordBotToken})
+        end
     end)
     
     StopResource("hardcap")
@@ -763,7 +874,13 @@ local commands = {}
 
 commands.addq = function()
     Queue:DebugPrint("ADDED DEBUG QUEUE")
-    Queue:AddToQueue({"steam:110000103fd1bb1"..testAdds}, os_time(), "TestAdd: " .. testAdds, "debug")
+    Queue:AddToQueue({"steam:110000103fd1bb1"..testAdds}, os_time(), "TestAdd: " .. testAdds,math.random(1,100), "debug",100,"DeBUG 100")
+    testAdds = testAdds + 1
+end
+
+commands.addqq = function()
+    Queue:DebugPrint("ADDED DEBUG QUEUE")
+    Queue:AddToQueue({"steam:110000103fd1bb1"..testAdds}, os_time(), "TestAdd: " .. testAdds,math.random(1,100), "debug",10,"DeBUG 10")
     testAdds = testAdds + 1
 end
 

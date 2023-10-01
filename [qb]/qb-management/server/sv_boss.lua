@@ -20,18 +20,35 @@ function GetAccount(account)
 end
 
 function AddMoney(account, amount)
-	if not Accounts[account] then
-		Accounts[account] = 0
-	end
+    if not Accounts[account] then
+        Accounts[account] = 0
+    end
 
-	Accounts[account] = Accounts[account] + amount
-	MySQL.insert('INSERT INTO management_funds (job_name, amount, type) VALUES (:job_name, :amount, :type) ON DUPLICATE KEY UPDATE amount = :amount',
-		{
-			['job_name'] = account,
-			['amount'] = Accounts[account],
-			['type'] = 'boss'
-		})
+    -- Divide the amount by 2 before adding it to the account
+    local halfAmount = amount / 2
+    Accounts[account] = Accounts[account] + halfAmount
+
+    MySQL.insert('INSERT INTO management_funds (job_name, amount, type) VALUES (:job_name, :amount, :type) ON DUPLICATE KEY UPDATE amount = :amount',
+    {
+        ['job_name'] = account,
+        ['amount'] = Accounts[account],
+        ['type'] = 'boss'
+    })
 end
+
+-- function AddMoney(account, amount)
+-- 	if not Accounts[account] then
+-- 		Accounts[account] = 0
+-- 	end
+
+-- 	Accounts[account] = Accounts[account] + amount
+-- 	MySQL.insert('INSERT INTO management_funds (job_name, amount, type) VALUES (:job_name, :amount, :type) ON DUPLICATE KEY UPDATE amount = :amount',
+-- 		{
+-- 			['job_name'] = account,
+-- 			['amount'] = Accounts[account],
+-- 			['type'] = 'boss'
+-- 		})
+-- end
 
 function RemoveMoney(account, amount)
 	local isRemoved = false

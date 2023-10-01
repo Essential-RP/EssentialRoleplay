@@ -2,17 +2,24 @@ Config = Config or {}
 
 Config.ReloadTime = math.random(4000, 6000)
 
---[[ Config.JamChance = 1000 -- 1/1000 chance of jamming per bullet fired ]]
-
-Config.AttachmentDurability = false -- If you want to disable durability for attachments, set this to false.
--- If an error occurs with attachments, more than likey you have an attachment or weapon that is not in the list below. -- 
--- Add the weapon or attachment to the list below and set the value to whatever you want. --
-
 Config.DurabilityBlockedWeapons = {
     "weapon_stungun",
     "weapon_nightstick",
     "weapon_flashlight",
     "weapon_unarmed",
+}
+
+Config.Throwables = {
+    "ball",
+    "bzgas",
+    "flare",
+    "grenade",
+    "molotov",
+    "pipebomb",
+    "proxmine",
+    "smokegrenade",
+    "snowball",
+    "stickybomb",
 }
 
 Config.DurabilityMultiplier = {
@@ -154,7 +161,7 @@ Config.DurabilityMultiplier = {
     -- ['weapon_ak47'] 			= 0.15,
     -- ['weapon_de'] 	                = 0.15,
     -- ['weapon_fnx45'] 			= 0.15,
-    -- ['weapon_glock17'] 		        = 0.15,
+    ['weapon_glock17'] 		        = 0.15,
     -- ['weapon_m4'] 			= 0.15,
     -- ['weapon_hk416'] 			= 0.15,
     -- ['weapon_mk14'] 			= 0.15,
@@ -278,131 +285,21 @@ Config.DurabilityMultiplier = {
     ['marksmanrifle_luxuryfinish']  = 0.15,
 }
 
--- Weapons Damage; modifier = 1.0 is default. Go below 1.0 and the damage will be reduced, go above 1.0 and damage will become higher.
--- Set disableCriticalHits to true to disable. Set it to false to enable.
-
--- Config.WeaponsDamage = {
---     [`WEAPON_UNARMED`] = {model = `WEAPON_UNARMED`, modifier = 0.2, disableCriticalHits = true},
---     [`WEAPON_NIGHTSTICK`] = {model = `WEAPON_NIGHTSTICK`, modifier = 0.1, disableCriticalHitsHits = true},
---     [`WEAPON_FLASHLIGHT`] = {model = `WEAPON_NIGHTSTICK`, modifier = 0.1, disableCriticalHits = true},
-
---     [`WEAPON_KNIFE`] = {model = `WEAPON_KNIFE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_KNUCKLE`] = {model = `WEAPON_KNUCKLE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_NIGHTSTICK`] = {model = `WEAPON_NIGHTSTICK`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_HAMMER`] = {model = `WEAPON_HAMMER`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_BAT`] = {model = `WEAPON_BAT`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_GOLFCLUB`] = {model = `WEAPON_GOLFCLUB`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_CROWBAR`] = {model = `WEAPON_CROWBAR`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_BOTTLE`] = {model = `WEAPON_BOTTLE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_DAGGER`] = {model = `WEAPON_DAGGER`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_HATCHET`] = {model = `WEAPON_HATCHET`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MACHETE`] = {model = `WEAPON_MACHETE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_SWITCHBLADE`] = {model = `WEAPON_SWITCHBLADE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_PROXMINE`] = {model = `WEAPON_PROXMINE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_BZGAS`] = {model = `WEAPON_BZGAS`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_SMOKEGRENADE`] = {model = `WEAPON_SMOKEGRENADE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MOLOTOV`] = {model = `WEAPON_MOLOTOV`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_REVOLVER`] = {model = `WEAPON_REVOLVER`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_POOLCUE`] = {model = `WEAPON_POOLCUE`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_PIPEWRENCH`] = {model = `WEAPON_PIPEWRENCH`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_PISTOL`] = {model = `WEAPON_PISTOL`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_PISTOL_MK2`] = {model = `WEAPON_PISTOL_MK2`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_COMBATPISTOL`] = {model = `WEAPON_COMBATPISTOL`, modifier = 0.90, disableCriticalHits = true},
---     [`WEAPON_APPISTOL`] = {model = `WEAPON_APPISTOL`, modifier = 1.0, disableCriticalHits = true},
---     [`WEAPON_PISTOL50`] = {model = `WEAPON_PISTOL50`, modifier = 1.0, disableCriticalHits = true},
---     [`WEAPON_SNSPISTOL`] = {model = `WEAPON_SNSPISTOL`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_HEAVYPISTOL`] = {model = `WEAPON_HEAVYPISTOL`, modifier = 0.65, disableCriticalHits = true},
---     [`WEAPON_VINTAGEPISTOL`] = {model = `WEAPON_VINTAGEPISTOL`, modifier = 0.87, disableCriticalHits = true},
---     [`WEAPON_FLAREGUN`] = {model = `WEAPON_FLAREGUN`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MARKSMANPISTOL`] = {model = `WEAPON_MARKSMANPISTOL`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MICROSMG`] = {model = `WEAPON_MICROSMG`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MINISMG`] = {model = `WEAPON_MINISMG`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_SMG`] = {model = `WEAPON_SMG`, modifier = 0.75, disableCriticalHits = true},
---     [`WEAPON_SMG_MK2`] = {model = `WEAPON_SMG_MK2`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_ASSAULTSMG`] = {model = `WEAPON_ASSAULTSMG`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_MG`] = {model = `WEAPON_MG`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_COMBATMG`] = {model = `WEAPON_COMBATMG`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_COMBATMG_MK2`] = {model = `WEAPON_COMBATMG_MK2`, modifier = 0.1, disableCriticalHits = true},
---     [`WEAPON_COMBATPDW`] = {model = `WEAPON_COMBATPDW`, modifier = 2.1, disableCriticalHits = true},
-
---     [`weapon_glock17`] = {model = `weapon_glock17`, modifier = 1.2, disableCriticalHits = true},
-
---     [`weapon_m1911`] = {model = `weapon_m1911`, modifier = 0.70, disableCriticalHits = true},
-    
-    
--- }
-
-Config.Throwables = {
-    'ball',
-    'bzgas',
-    'flare',
-    'grenade',
-    'molotov',
-    'pipebomb',
-    'proxmine',
-    'smokegrenade',
-    'snowball',
-    'stickybomb'
+Config.WeaponRepairPoints = {
+    [1] = {
+        coords = vector3(964.02, -1267.41, 34.97),
+        IsRepairing = false,
+        RepairingData = {},
+    }
 }
 
-Config.RepairPoints = {
-    [1] = {
-        coords = vector4(11.17, -1098.84, 29.8, 156.87),
-        type = "public", --public, job, gang, private
-        --jobs = { ["police"] = 0 },
-        --gangs = { ["ammu"] = 0, ["rrmc"] = 0 }, 
-        --citizenids = {["JFD98238"] = true, ["HJS29340"] = true},
-        repairCosts = {
-            ["pistol"] = {cost = 2000, time = math.random(1,5)},
-            ["smg"] = {cost = 4000, time = math.random(1,5)},
-            ["mg"] = {cost = 6000, time = math.random(1,5)},
-            ["shotgun"] = {cost = 6000, time = math.random(1,5)},
-            ["rifle"] = {cost = 5000, time = math.random(1,5)},
-            ["sniper"] = {cost = 7000, time = math.random(1,5)},
-        },
-        tableTimeout = false, -- Set to false if you don't want to use the table timeout. Time is in minutes
-        IsRepairing = false,
-        RepairingData = {},
-        debug = false
-    },
-    [2] = {
-        coords = vector4(14.13, -1099.94, 29.8, 160.38),
-        type = "public", --public, job, gang, private
-        --jobs = { ["police"] = 0 },
-        --gangs = { ["ammu"] = 0, ["rrmc"] = 0 }, 
-        --citizenids = {["JFD98238"] = true, ["HJS29340"] = true},
-        repairCosts = {
-            ["pistol"] = {cost = 2000, time = math.random(1,5)},
-            ["smg"] = {cost = 4000, time = math.random(1,5)},
-            ["mg"] = {cost = 6000, time = math.random(1,5)},
-            ["shotgun"] = {cost = 6000, time = math.random(1,5)},
-            ["rifle"] = {cost = 5000, time = math.random(1,5)},
-            ["sniper"] = {cost = 7000, time = math.random(1,5)},
-        },
-        tableTimeout = 10, -- Set to false if you don't want to use the table timeout. Time is in minutes
-        IsRepairing = false,
-        RepairingData = {},
-        debug = false
-    },
-    [3] = {
-        coords = vector4(17.15, -1101.04, 29.8, 159.48),
-        type = "public", --public, job, gang, private
-        --jobs = { ["police"] = 0 },
-        --gangs = { ["ammu"] = 0, ["rrmc"] = 0 }, 
-        --citizenids = {["JFD98238"] = true, ["HJS29340"] = true},
-        repairCosts = {
-            ["pistol"] = {cost = 2000, time = math.random(1,3)},
-            ["smg"] = {cost = 4000, time = math.random(1,3)},
-            ["mg"] = {cost = 6000, time = math.random(1,3)},
-            ["shotgun"] = {cost = 6000, time = math.random(1,3)},
-            ["rifle"] = {cost = 5000, time = math.random(1,3)},
-            ["sniper"] = {cost = 7000, time = math.random(1,3)},
-        },
-        tableTimeout = 10, -- Set to false if you don't want to use the table timeout. Time is in minutes
-        IsRepairing = false,
-        RepairingData = {},
-        debug = false
-    },
+Config.WeaponRepairCosts = {
+    ["pistol"] = 1000,
+    ["smg"] = 3000,
+    ["mg"] = 4000,
+    ["rifle"] = 5000,
+    ["sniper"] = 7000,
+    ["shotgun"] = 6000
 }
 
 WeaponAttachments = {
@@ -1460,3 +1357,10 @@ WeaponAttachments = {
         },
     },
 }
+
+
+local function getConfigWeaponAttachments(weapon)
+    return WeaponAttachments[weapon]
+end
+
+exports('getConfigWeaponAttachments', getConfigWeaponAttachments)

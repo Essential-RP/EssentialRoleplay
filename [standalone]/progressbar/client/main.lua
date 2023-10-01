@@ -244,14 +244,39 @@ function ActionCleanup()
         end
     end
 
-    DetachEntity(NetToObj(prop_net), 1, 1)
-    DeleteEntity(NetToObj(prop_net))
-    DetachEntity(NetToObj(propTwo_net), 1, 1)
-    DeleteEntity(NetToObj(propTwo_net))
+    if prop_net then
+        DetachEntity(NetToObj(prop_net), 1, 1)
+        DeleteEntity(NetToObj(prop_net))
+    end
+    if propTwo_net then
+        DetachEntity(NetToObj(propTwo_net), 1, 1)
+        DeleteEntity(NetToObj(propTwo_net))
+    end
     prop_net = nil
     propTwo_net = nil
     runProgThread = false
 end
+
+-- function ActionCleanup()
+--     local ped = PlayerPedId()
+
+--     if Action.animation ~= nil then
+--         if Action.animation.task ~= nil or (Action.animation.animDict ~= nil and Action.animation.anim ~= nil) then
+--             ClearPedSecondaryTask(ped)
+--             StopAnimTask(ped, Action.animDict, Action.anim, 1.0)
+--         else
+--             ClearPedTasks(ped)
+--         end
+--     end
+
+--     DetachEntity(NetToObj(prop_net), 1, 1)
+--     DeleteEntity(NetToObj(prop_net))
+--     DetachEntity(NetToObj(propTwo_net), 1, 1)
+--     DeleteEntity(NetToObj(propTwo_net))
+--     prop_net = nil
+--     propTwo_net = nil
+--     runProgThread = false
+-- end
 
 function loadAnimDict(dict)
 	while (not HasAnimDictLoaded(dict)) do

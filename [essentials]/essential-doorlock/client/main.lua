@@ -298,7 +298,7 @@ end
 local function lockpickFinish(success)
 	if success then
 		QBCore.Functions.Notify(Lang:t("success.lockpick_success"), 'success', 2500)
-		if closestDoor.data.coords then
+		if closestDoor.data.doors then
 			TaskTurnPedToFaceCoord(playerPed, closestDoor.data.doors[1].objCoords.x, closestDoor.data.doors[1].objCoords.y, closestDoor.data.doors[1].objCoords.z, 0)
 		else
 			TaskTurnPedToFaceCoord(playerPed, closestDoor.data.objCoords.x, closestDoor.data.objCoords.y, closestDoor.data.objCoords.z, 0)
@@ -319,8 +319,8 @@ local function lockpickFinish(success)
 				TriggerServerEvent("qb-doorlock:server:removeLockpick", "advancedlockpick")
 				TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
 			else
---[[ 				TriggerServerEvent("qb-doorlock:server:removeLockpick", "lockpick")
-				TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove") ]]
+				TriggerServerEvent("qb-doorlock:server:removeLockpick", "lockpick")
+				TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
 			end
 		end
 	end
@@ -397,7 +397,7 @@ RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
 	PlayerData = val
 end)
 
-RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state, src, enableAnimation, enableSounds)
+RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state, src, enableSounds, enableAnimation)
 	if not Config.DoorList[doorID] then return end
 	if enableAnimation == nil then enableAnimation = true end
 	if enableSounds == nil then enableSounds = true end
@@ -485,15 +485,8 @@ end)
 
 RegisterNetEvent('lockpicks:UseLockpick', function(isAdvanced)
 	if not closestDoor.data or not next(closestDoor.data) or PlayerData.metadata['isdead'] or PlayerData.metadata['ishandcuffed'] or (not closestDoor.data.pickable and not closestDoor.data.lockpick) or not closestDoor.data.locked then return end
-	exports['ps-ui']:Circle(function(success)
-		if success then
-			lockpickFinish(success)
-			--print("success")
-		else
-			QBCore.Functions.Notify("Are you dumb? Go learn how to crack the door !", "success")
-			--print("fail")
-		end
-	end, 4, 14) -- NumberOfCircles, MS
+	usingAdvanced = isAdvanced
+	TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
 end)
 
 RegisterNetEvent('qb-doorlock:client:addNewDoor', function()

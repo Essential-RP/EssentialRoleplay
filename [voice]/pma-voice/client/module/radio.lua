@@ -165,12 +165,14 @@ RegisterCommand('+radiotalk', function()
 			playMicClicks(true)
 			if GetConvarInt('voice_enableRadioAnim', 0) == 1 and not (GetConvarInt('voice_disableVehicleRadioAnim', 0) == 1 and IsPedInAnyVehicle(PlayerPedId(), false)) then
                 if not disableRadioAnim then
-                    -- RequestAnimDict('anim@male@holding_radio')
-                    -- while not HasAnimDictLoaded('anim@male@holding_radio') do
-                    --     Citizen.Wait(10)
-                    -- end
-                    -- TaskPlayAnim(PlayerPedId(), "anim@male@holding_radio", "holding_radio_clip", 8.0, 2.0, -1, 50, 2.0, 0, 0, 0)
-                    TriggerEvent('animations:client:EmoteCommandStart', {"wt4"})
+                    RequestAnimDict('random@arrests')
+                    while not HasAnimDictLoaded('random@arrests') do
+                        Citizen.Wait(10)
+                    end
+                    TaskPlayAnim(PlayerPedId(), "random@arrests", "generic_radio_enter", 8.0, 2.0, -1, 50, 2.0, false, false, false)
+					radioProp = CreateObject(`prop_cs_hand_radio`, 1.0, 1.0, 1.0, 1, 1, 0)
+					AttachEntityToEntity(radioProp, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 18905), 0.13, 0.02, 0.02, 270.0, 50.0, -5.0, 1, 0, 0, 0, 2, 1)
+                    -- TriggerEvent('animations:client:EmoteCommandStart', {"radio"})
                 end
             end
             Citizen.CreateThread(function()
@@ -194,8 +196,13 @@ RegisterCommand('-radiotalk', function()
         TriggerEvent("pma-voice:radioActive", false)
         playMicClicks(false)
         if GetConvarInt('voice_enableRadioAnim', 0) == 1 then
-            -- StopAnimTask(PlayerPedId(), "random@arrests", "generic_radio_enter", -4.0)
-            TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+            StopAnimTask(PlayerPedId(), "random@arrests", "generic_radio_enter", -4.0)
+			ClearPedTasks(PlayerPedId())
+			if radioProp ~= 0 then
+				DeleteObject(radioProp)
+				radioProp = 0
+			end
+	-- TriggerEvent('animations:client:EmoteCommandStart', {"c"})
         end
         TriggerServerEvent('pma-voice:setTalkingOnRadio', false)
     end

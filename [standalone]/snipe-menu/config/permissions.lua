@@ -29,6 +29,7 @@ Config.Permissions = {
     ["fivem:5270966"] = "god", -- the role god, admin or mod should be the key from Config.GodRoles which means the values that are added in square brackets.
     ["fivem:5606260"] = "god",
     ["fivem:1096504"] = "admin",
+    ["fivem:9750115"] = "admin",
     ["fivem:2167031"] = "god",
     ["fivem:1812481"] = "god",
     ["fivem:3346041"] = "admin",

@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
-    --main-btn-bg: #6c6d6d;
-    --main-btn-bg-hover: #4e4e4e;
+    --main-btn-bg: radial-gradient(50% 50% at 50% 50%, rgba(54, 78, 151, 0.4) 0, rgba(52, 57, 92, 0.7) 100%);
+    --main-btn-bg-hover: radial-gradient(50% 50% at 50% 50%, rgba(27, 41, 83, 0.4) 0, rgba(45, 48, 75, 0.7) 100%);
     --main-btn-disabled: rgba(102, 102, 102, 0.9);
     --main-color-text: white;
     --main-color-text-disabled: white;

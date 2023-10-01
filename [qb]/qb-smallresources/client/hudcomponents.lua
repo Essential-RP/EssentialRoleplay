@@ -31,7 +31,7 @@ CreateThread(function()
             DisableControlAction(2, disableControls[i], true)
         end
 
-        DisplayAmmoThisFrame(displayAmmo)
+        -- DisplayAmmoThisFrame(displayAmmo)
         
         -- Density
 

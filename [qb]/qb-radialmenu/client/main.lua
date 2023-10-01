@@ -97,6 +97,8 @@ end
 --     end
 -- end
 
+local vehicleIndex = nil -- Initialize vehicleIndex to nil
+
 local function SetupVehicleMenu()
     local VehicleMenu = {
         id = 'control',
@@ -108,16 +110,17 @@ local function SetupVehicleMenu()
     }
 
     local ped = PlayerPedId()
-    local Vehicle = GetVehiclePedIsIn(ped) ~= 0 and GetVehiclePedIsIn(ped) or getNearestVeh()
-   
+    local vehicle = IsPedInAnyVehicle(ped, false) and GetVehiclePedIsIn(ped, false) or 0
 
-    if Vehicle == 0 then                 --fixed for new vehcontrol
+    if vehicle == 0 then -- Use 'vehicle' instead of 'Vehicle'
         if vehicleIndex then
             RemoveOption(vehicleIndex)
             vehicleIndex = nil
         end
     else
-        vehicleIndex = AddOption(VehicleMenu, vehicleIndex)
+        if not vehicleIndex then -- Check if vehicleIndex is nil before adding the option
+            vehicleIndex = AddOption(VehicleMenu, vehicleIndex)
+        end
     end
 end
 

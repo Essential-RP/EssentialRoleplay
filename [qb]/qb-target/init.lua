@@ -67,9 +67,30 @@ Config.MenuControlKey = 237
 
 Config.CircleZones = {
 
+    
+
 }
 
 Config.BoxZones = {
+
+    ["Police Armory"] = {
+    name = "PoliceArmory",
+    coords = vector3(479.83, -996.66, 30.69),           length = 1,
+        width = 1,
+        heading = 0,
+        debugPoly = false,
+        minZ=26.89,
+        maxZ=30.89,
+        options = {
+            {
+                event = "qb-police:client:openArmoury",
+                icon = "fa-solid fa-shield-halved",
+                label = "Open PD Armory",
+                job = "police",
+            },
+        },
+        distance = 3.5
+    },
 
 	-- ["Police Armory"] = {
     --     name = "PoliceArmory",
@@ -142,7 +163,13 @@ Config.BoxZones = {
                 event = "qb-policejob:ToggleDuty",
                 icon = "fa-solid fa-shield-halved",
                 label = "Clock On",
-                job = "police",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
             },
         },
         distance = 3.5
@@ -161,7 +188,13 @@ Config.BoxZones = {
                 event = "qb-police:client:openSmallArmory",
                 icon = "fa-solid fa-gear",
                 label = "Equipment",
-                job = "police",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
             },
         },
         distance = 2.5
@@ -180,7 +213,13 @@ Config.BoxZones = {
                 event = "qb-police:client:openArmoury",
                 icon = "fa-solid fa-gear",
                 label = "Weaponry",
-                job = "police",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
             },
         },
         distance = 2.5
@@ -199,29 +238,16 @@ Config.BoxZones = {
                 event = "qb-police:client:openAmmo",
                 icon = "fa-solid fa-gear",
                 label = "Ammo",
-                job = "police",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
             },
         },
         distance = 2.5
-    },
-    ["PD Garage"] = {
-        name = "PD Garage",
-        coords = vector3(441.39, -974.64, 25.7),
-        length = 1,
-        width = 1,
-        heading = 0,
-        debugPoly = false,
-        minZ=22.5,
-        maxZ=26.5,
-        options = {
-            {
-                event = "garage:menu",
-                icon = "fa-solid fa-warehouse",
-                label = "Open Vehicle Garage",
-                job = "police",
-            },
-        },
-        distance = 3.5
     },
     ["PD Evidence"] = {
         name = "PD Evidence",
@@ -237,10 +263,66 @@ Config.BoxZones = {
                 event = "police:client:EvidenceStashDrawer",
                 icon = "fa-solid fa-folder",
                 label = "Open Evidence Locker",
-                job = "police",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
             },
         },
         distance = 4.5
+    },
+    ["PD Outfit"] = {
+        name = "PD Outfit",
+        coords = vector3(464.19, -996.64, 30.69),
+        length = 0.4,
+        width = 1.0,
+        heading = 0,
+        debugPoly = false,
+        minZ=28.09,
+        maxZ=32.09,
+        options = {
+            {
+                event = "apartments:client:ChangeOutfit",
+                icon = "fa-solid fa-shirt",
+                label = "Change Outfit",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
+            },
+        },
+        distance = 2.5
+    },
+    ["PD Outfit1"] = {
+        name = "PD Outfit1",
+        coords = vector3(464.25, -999.05, 30.69),
+        length = 0.4,
+        width = 1.0,
+        heading = 0,
+        debugPoly = false,
+        minZ=28.29,
+        maxZ=32.29,
+        options = {
+            {
+                event = "apartments:client:ChangeOutfit",
+                icon = "fa-solid fa-shirt",
+                label = "Change Outfit",
+                job = {
+                    ["police"] = 0,
+                    ["bcso"] = 0,
+                    ["rangers"] = 0,
+                    ["troopers"] = 0,
+                    ["corrections"] = 0,
+                }
+            },
+        },
+        distance = 2.5
     },
     -- ["EMS Evidence"] = {
     --     name = "EMS Evidence",

@@ -4,7 +4,7 @@
 Config.DoorList['Police MRPD-cell #1'] = {
     fixText = false,
     objYaw = 0.0,
-    distance = 2,
+    distance = 1,
     authorizedJobs = { ['police'] = 0 },
     locked = true,
     objCoords = vec3(477.912598, -1012.188660, 26.480055),
@@ -17,7 +17,7 @@ Config.DoorList['Police MRPD-cell #1'] = {
 Config.DoorList['Police MRPD-cell #2'] = {
     fixText = false,
     objYaw = 0.0,
-    distance = 2,
+    distance = 1,
     authorizedJobs = { ['police'] = 0 },
     locked = true,
     objCoords = vec3(480.912811, -1012.188660, 26.480055),
@@ -30,7 +30,7 @@ Config.DoorList['Police MRPD-cell #2'] = {
 Config.DoorList['Police MRPD-cell #3'] = {
     fixText = false,
     objYaw = 0.0,
-    distance = 2,
+    distance = 1,
     authorizedJobs = { ['police'] = 0 },
     locked = true,
     objCoords = vec3(483.912720, -1012.188660, 26.480055),
@@ -43,7 +43,7 @@ Config.DoorList['Police MRPD-cell #3'] = {
 Config.DoorList['Police MRPD-cell #4'] = {
     fixText = false,
     objYaw = 0.0,
-    distance = 2,
+    distance = 1,
     authorizedJobs = { ['police'] = 0 },
     locked = true,
     objCoords = vec3(486.913116, -1012.188660, 26.480055),
@@ -61,7 +61,7 @@ Config.DoorList['Police MRPD-cell #5'] = {
     objYaw = 180.00001525879,
     authorizedJobs = { ['police'] = 0 },
     fixText = false,
-    distance = 2,
+    distance = 1,
     objCoords = vec3(484.176422, -1007.734375, 26.480055),
 }
 
@@ -74,7 +74,7 @@ Config.DoorList['Police MRPD-lawyer cell exit'] = {
     authorizedJobs = { ['police'] = 0 },
     fixText = false,
     objYaw = 180.00001525879,
-    distance = 2,
+    distance = 1,
     doorType = 'door',
 }
 
@@ -88,7 +88,7 @@ Config.DoorList['Police MRPD-Interegation Main Door'] = {
     },
     doorRate = 1.0,
     locked = true,
-    distance = 2,
+    distance = 1,
 }
 
 -- Interegation Door 2 created by yax
@@ -101,7 +101,7 @@ Config.DoorList['Police MRPD-Interegation Door 2'] = {
     },
     locked = true,
     doorRate = 1.0,
-    distance = 2,
+    distance = 1,
 }
 
 -- EvidenceRoom created by yax

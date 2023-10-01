@@ -191,9 +191,9 @@ local function startTestDriveTimer(testDriveTime, shopname)
     while not IsPedInAnyVehicle(PlayerPedId()) do
         Wait(1000)
     end
-    exports['ps-ui']:Notify('/fullupgrade to fully upgrade your test drive')
+    exports['ps-ui']:Notify('/maxout to fully upgrade your test drive vehicle')
     local gameTimer = GetGameTimer()
-    CreateThread(function()-- Avoids the condition to run before entering vehicle
+    CreateThread(function()
         while inTestDrive do
             if GetGameTimer() < gameTimer + tonumber(1000 * testDriveTime) then
                 local secondsLeft = GetGameTimer() - gameTimer
@@ -204,7 +204,7 @@ local function startTestDriveTimer(testDriveTime, shopname)
                         Wait(0)
                     end
                     Wait(2000)
-                    exports['ps-ui']:Notify('You return the vehicle back to the shop')
+                    exports['ps-ui']:Notify('You have returned the vehicle back to the shop')
                     if IsPedInAnyVehicle(PlayerPedId()) then
                         SetPedCoordsKeepVehicle(PlayerPedId(), Config.Shops[shopname]['ReturnLocation'].x, Config.Shops[shopname]['ReturnLocation'].y, Config.Shops[shopname]['ReturnLocation'].z)
                         SetEntityHeading(GetVehiclePedIsIn(PlayerPedId()),  Config.Shops[shopname]['ReturnLocation'].w)
@@ -514,31 +514,6 @@ RegisterNetEvent('qb-vehicleshop:client:TestDrive', function()
         exports['ps-ui']:Notify(Lang:t('error.testdrive_alreadyin'), 'error')
     end
 end)
-
--- RegisterNetEvent('qb-vehicleshop:client:TestDrive', function()
---     if not inTestDrive and ClosestVehicle ~= 0 then
---         if IsSpawnPointClear(vector3(Config.Shops[insideShop]["TestDriveSpawn"].x, Config.Shops[insideShop]["TestDriveSpawn"].y, Config.Shops[insideShop]["TestDriveSpawn"].z), 2.5) then
---             inTestDrive = true
---             local prevCoords = GetEntityCoords(PlayerPedId())
---             tempShop = insideShop -- temp hacky way of setting the shop because it changes after the callback has returned since you are outside the zone
---             QBCore.Functions.TriggerCallback('QBCore:Server:SpawnVehicle', function(netId)
---                 local veh = NetToVeh(netId)
---                 exports['prime-fuel']:SetFuel(veh, 100)
---                 SetVehicleNumberPlateText(veh, 'TESTDRIVE')
---                 SetEntityHeading(veh, Config.Shops[tempShop]["TestDriveSpawn"].w)
---                 TriggerEvent('vehiclekeys:client:SetOwner', QBCore.Functions.GetPlate(veh))
---                 testDriveVeh = netId
---                 exports['ps-ui']:Notify(Lang:t('general.testdrive_timenoti', {testdrivetime = Config.Shops[tempShop]["TestDriveTimeLimit"]}))
---             end, Config.Shops[tempShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle, Config.Shops[tempShop]["TestDriveSpawn"], true)
---             createTestDriveReturn()
---             startTestDriveTimer(Config.Shops[tempShop]["TestDriveTimeLimit"] * 60, tempShop)
---         else
---             exports['ps-ui']:Notify('The Vehicle spawn area is not clear')
---         end
---     else
---         exports['ps-ui']:Notify(Lang:t('error.testdrive_alreadyin'), 'error')
---     end
--- end)
 
 RegisterNetEvent('qb-vehicleshop:client:customTestDrive', function(data)
     if not inTestDrive then
@@ -910,7 +885,7 @@ CreateThread(function()
     end
 end)
 
-RegisterCommand("fullupgrade", function()
+RegisterCommand("maxout", function()
     local entity = GetVehiclePedIsIn(PlayerPedId())
     local invehicle = IsPedInAnyVehicle(PlayerPedId())
     NetworkRequestControlOfEntity(entity)
@@ -930,7 +905,7 @@ RegisterCommand("fullupgrade", function()
                 props.pearlescentColor = 0
                 props.modLivery = 2
                 QBCore.Functions.SetVehicleProperties(entity, props)
-                exports['ps-ui']:Notify('Vehicle has been fully upgraded.')
+                exports['ps-ui']:Notify('Vehicle has been max upgraded. Have Fun!')
             else
                 exports['ps-ui']:Notify('This is not a test drive.')
             end

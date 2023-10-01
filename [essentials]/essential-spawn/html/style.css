@@ -12,7 +12,7 @@
 }
 
 .MapStyle{
-    height: 95%;
+    height: 105%;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -61,16 +61,17 @@
 .BtnBodyClass{
     position: absolute;
     display: block;
-    top: 900;
-    left: 82%;
+    top: 810;
+    left: 21.5%;
     transform: translate(-50%, -50%);
     z-index: 1;
     width: 20%;
-    background: radial-gradient(at center, #A8B0AB, #595859);  
+    height: 10%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(54, 78, 151, 0.4) 0, rgba(52, 57, 92, 0.7) 100%); 
     padding: 0.6% 0;
     text-align: center;
-    box-shadow: 1px 1px 6px rgb(5, 5, 5);
-    color: whitesmoke;
+    box-shadow: 1px 1px 6px rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
     font-family: sans-serif;
     font-size: 1.8vh;
     border-radius: 5px;

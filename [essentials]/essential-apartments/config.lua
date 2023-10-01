@@ -9,7 +9,7 @@ Apartments.Locations = {
         coords = {
         enter = vector4(-1857.84, -347.07, 49.84, 139.28), 
         },
-        pos = {top = 67.8, left = 62.2},
+        pos = {top = 62.2, left = 61.6},
         polyzoneBoxData = {
             heading= 320,
             minZ=47.24,

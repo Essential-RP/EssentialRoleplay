@@ -4,13 +4,13 @@ Config = {}
 -- a lot of the steamid converting websites are broken rn and give you the wrong steamid. I use https://steamid.xyz/ with no problems.
 -- you can also give priority through the API, read the examples/readme.
 Config.Priority = {
-    ["STEAM_0:1:0000####"] = 1,
-    ["steam:110000######"] = 25,
-    ["ip:127.0.0.0"] = 85
+    -- ["STEAM_0:1:0000####"] = 1,
+    ["steam:11000014aa94d6c"] = 1,
+    -- ["ip:127.0.0.0"] = 85
 }
 
 -- require people to run steam
-Config.RequireSteam = false
+Config.RequireSteam = true
 
 -- "whitelist" only server
 Config.PriorityOnly = false
@@ -25,10 +25,10 @@ Config.DisableHardCap = true
 Config.ConnectTimeOut = 600
 
 -- will remove players from queue if the server doesn't recieve a message from them within: __ seconds
-Config.QueueTimeOut = 90
+Config.QueueTimeOut = 5
 
 -- will give players temporary priority when they disconnect and when they start loading in
-Config.EnableGrace = true
+Config.EnableGrace = false
 
 -- how much priority power grace time will give
 Config.GracePower = 5
@@ -57,5 +57,32 @@ Config.Language = {
     connectingerr = "\xE2\x9D\x97[Queue] Error: Error adding you to connecting list",
     timedout = "\xE2\x9D\x97[Queue] Error: Timed out?",
     wlonly = "\xE2\x9D\x97[Queue] You must be whitelisted to join this server",
-    steam = "\xE2\x9D\x97 [Queue] Error: Steam must be running"
+    steam = "\xE2\x9D\x97 [Queue] Error: Steam must be running",
+    stopForDebug = "\xE2\x9D\x97 [Queue] Error: Stop For Debug",
+    whitelist = {
+        noDiscord = "\xE2\x9D\x97 [Queue] Error: Discord Need to Run in Your System",
+        noRole = "\xE2\x9D\x97 [Queue] Error: Sorry, I didn't find you in whitelist Role.",
+        checkingRoles = "\xE2\x8F\xB3Checking Your Rules...",
+        checkingQueue = "\xF0\x9F\x94\x8DFind Position For You..."
+
+    }
 }
+
+Config.enableDiscordWhitelist = false -- For Enable Whitelist System
+Config.discordServerGuild = "" -- Discord Server ID to check it if player is in the server
+Config.discordBotToken = ""  -- Discord Token Bot - You Can Create at https://discord.com/developers/applications
+
+
+Config.Roles = {
+	owner = {
+		roleID = "", --Role ID
+		point = 15,  -- any bigger point can push player on the first row of queue
+	},
+    -- vip = {
+	-- 	roleID = "", --Role ID
+	-- 	point = 20,  -- any bigger point can push player on the first row of queue
+	-- },
+
+}
+
+

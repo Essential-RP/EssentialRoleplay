@@ -1,8 +1,8 @@
 Config = Config or {}
 
 Config.OneStore = true -- Set to true if using just the main Vangelico's Jewellers
+Config.HackCoolDown = 120
 Config.Cooldown = 5 * (60 * 2000) -- where x is minutes ie. x * (60 * 2000) \\ For door auto lock function
-Config.HackCoolDown = 1
 Config.Timeout = 5 * (60 * 2000) -- where x is minutes ie. x * (60 * 2000) \\ For case smashing cooldown
 Config.AutoLock = true -- Set to false if you don't want the doors to auto lock/lock at all
 Config.RequiredCops = 0

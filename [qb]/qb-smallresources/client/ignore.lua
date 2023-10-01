@@ -105,3 +105,22 @@ CreateThread(function()
         SetPedDropsWeaponsWhenDead(v, false)
     end
 end)
+
+--<!>-- Removes Base Headshot override --<!>--
+-- local COMBAT = {
+--     HealthThread = function()
+--         while true do
+--             Citizen.Wait(250)
+--             local ped = PlayerPedId()
+--             local pedid = PlayerId()
+
+--             SetPedSuffersCriticalHits(ped, false)
+--             SetPlayerHealthRechargeMultiplier(pedid, 0.0)
+--         end
+--     end,
+-- }
+
+-- Citizen.CreateThread(function()
+--     Citizen.Wait(250)
+--     COMBAT.HealthThread()
+-- end)

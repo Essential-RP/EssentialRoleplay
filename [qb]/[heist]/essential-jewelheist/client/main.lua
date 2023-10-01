@@ -590,6 +590,116 @@ end)
         end) -- Closing the first QBCore.Functions.TriggerCallback
       end) -- Closing the function and AddEventHandler
 
+      AddEventHandler('essential-jewelheistcustom:client:Thermiteinsidedoor', function(store, door)
+        local AlertChance = randomNum(1, 100)
+        if checkTime(Config.VangelicoHours.alertmorn.start, Config.VangelicoHours.alertmorn.fin) or checkTime(Config.VangelicoHours.alertnight.start, Config.VangelicoHours.alertnight.fin) then
+          AlertChance = randomNum(1, 50)
+        else
+          AlertChance = AlertChance
+        end
+      
+        if AlertChance <= 10 then
+          if Config.Dispatch == 'qb' then
+            TriggerServerEvent('police:server:policeAlert', 'Suspicious Activity')
+          elseif Config.Dispatch == 'ps' then
+            exports['ps-dispatch']:SuspiciousActivity()
+          elseif Config.Dispatch == 'cd' then
+            alertsCD('suspicious')
+          end
+          firstAlarm = true
+        end
+      
+        local thermTab = not door and Config.Stores[store]['Thermite'].Main or Config.Stores[store]['Thermite'].Sec
+        QBCore.Functions.TriggerCallback('essential-jewelheistcustom:server:GetCops', function(cops)
+          if not checkTime(Config.VangelicoHours.range.open, Config.VangelicoHours.range.close) then
+            if Config.Skills.enabled then
+              if not checkSkill('Thermite') then
+                QBCore.Functions.Notify(Lang:t('error.skill_fail', { value = Config.Skills['Thermite'].skill }), 'error')
+                return
+              end
+            end
+            if cops >= Config.RequiredCops then
+              local ped = PlayerPedId()
+              local coords = GetEntityCoords(ped)
+              local printChance = randomNum(1, 100)
+              local dist = #(coords - thermTab.coords)
+              if dist <= 1.5 then
+                if QBCore.Functions.HasItem(not door and Config.DoorItem or Config.BackRoom.Item) then
+                  if printChance <= 80 and not isWearingHandshoes() then
+                    TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+                  elseif printChance <= 5 and isWearingHandshoes() then
+                    TriggerServerEvent('evidence:server:CreateFingerDrop', coords)
+                    QBCore.Functions.Notify(Lang:t('error.fingerprints'), 'error')
+                  end
+                  SetEntityHeading(ped, thermTab.h)
+                  local thermSettings = not door and Config.ThermiteSettings or Config.BackRoom.Thermite
+                  exports['ps-ui']:Thermite(function(success) -- success
+                    if success then
+                      if not door then TriggerServerEvent('essential-jewelheistcustom:server:StoreHit', store, true) end
+                      QBCore.Functions.Notify(Lang:t('success.thermite'), 'success')
+                      local loc = thermTab.anim
+                      local rot = GetEntityRotation(ped)
+                      local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rot.x, rot.y, rot.z, 2, false, false, 1065353216, 0, 1.3)
+                      local bag = CreateObject(`hei_p_m_bag_var22_arm_s`, loc.x, loc.y, loc.z, true, true, false)
+                      SetEntityCollision(bag, false, true)
+                      NetworkAddPedToSynchronisedScene(ped, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'thermal_charge', 1.5, -4.0, 1, 16, 1148846080, 0)
+                      NetworkAddEntityToSynchronisedScene(bag, bagscene, 'anim@heists@ornate_bank@thermal_charge', 'bag_thermal_charge', 4.0, -8.0, 1)
+                      NetworkStartSynchronisedScene(bagscene)
+                      Wait(1500)
+                      coords = GetEntityCoords(ped)
+                      local thermal_charge = CreateObject(`hei_prop_heist_thermite`, coords.x, coords.y, coords.z + 0.2, true, true, true)
+                      SetEntityCollision(thermal_charge, false, true)
+                      AttachEntityToEntity(thermal_charge, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
+                      Wait(4000)
+                      TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+                      DetachEntity(thermal_charge, 1, 1)
+                      FreezeEntityPosition(thermal_charge, true)
+                      Wait(100)
+                      DeleteObject(bag)
+                      ClearPedTasks(ped)
+                      Wait(100)
+                      if Config.Skills.enabled then addSkillToPlayer('Thermite') end
+                      loadPtfx('scr_ornate_heist')
+                      local termcoords = GetEntityCoords(thermal_charge)
+                      local effect = StartParticleFxLoopedAtCoord('scr_heist_ornate_thermal_burn', termcoords.x, termcoords.y + 1.0, termcoords.z, 0, 0, 0, 0x3F800000, 0, 0, 0, 0)
+                      Wait(3000)
+                      StopParticleFxLooped(effect, 0)
+                      DeleteObject(thermal_charge)
+      
+                      -- When the hack is successful, trigger the cooldown event
+                      TriggerServerEvent('essential-jewelheistcustom:server:sethacktimercool')
+                      TriggerEvent('essential-jewelheistcustom:client:HackSuccess', store, door)
+      
+                      if not firstAlarm and AlertChance <= 25 then
+                        if Config.Dispatch == 'qb' then
+                          TriggerServerEvent('police:server:policeAlert', 'Explosion Reported')
+                        elseif Config.Dispatch == 'ps' then
+                          exports["ps-dispatch"]:Explosion()
+                        elseif Config.Dispatch == 'cd' then
+                          alertsCD('explosion')
+                        end
+                        firstAlarm = true
+                      end
+                    else
+                      QBCore.Functions.Notify(Lang:t('error.fail_therm'), 'error')
+                      TriggerServerEvent('essential-jewelheistcustom:server:RemoveDoorItem', door)
+                    end
+                  end, thermSettings.time, thermSettings.gridsize, thermSettings.incorrectBlocks)
+                else
+                  QBCore.Functions.Notify(Lang:t('error.wrong_item'), 'error')
+                end
+              else
+                QBCore.Functions.Notify(Lang:t('error.too_far'), 'error')
+              end
+            else
+              QBCore.Functions.Notify(Lang:t('error.minimum_police', { value = Config.RequiredCops }), 'error')
+            end
+          else
+            QBCore.Functions.Notify(Lang:t('error.stores_open'), 'error')
+          end
+        end) -- Closing the first QBCore.Functions.TriggerCallback
+      end) -- Closing the AddEventHandler
+
 
 --OG CODE
 -- AddEventHandler('essential-jewelheistcustom:client:Thermite', function(store, door)
@@ -754,7 +864,7 @@ AddEventHandler('essential-jewelheistcustom:client:HackSecurity', function(door)
                 Wait(250)
                 StopAnimTask(ped, animDict, anim, 8.0)
                 DeleteEntity(tab)
-                TriggerEvent('essential-jewelheistcustom:client:HackSuccess')
+                TriggerEvent('essential-jewelheistcustom:client:HackSuccess2')
                 TriggerServerEvent('essential-jewelheistcustom:server:RemoveBackitem')
                 TriggerServerEvent('essential-jewelheistcustom:server:HackReward')  
               else
@@ -841,6 +951,7 @@ AddEventHandler('essential-jewelheistcustom:client:HackSuccess', function(store,
     TriggerServerEvent('essential-jewelheistcustom:server:ToggleDoorlocks', store, true, false, true)
   end
 end)
+
 
 -------------------------------- EVENTS --------------------------------
 
@@ -1047,7 +1158,7 @@ exports['qb-target']:AddBoxZone('jeweldoor' .. 1, Config.Stores[1]['Thermite']['
       label = 'Thermite Door',
       item = Config.BackRoom.Item,
       action = function()
-        TriggerEvent('essential-jewelheistcustom:client:Thermite', 1, true)
+        TriggerEvent('essential-jewelheistcustom:client:Thermiteinsidedoor', 1, true)
       end
     }
   },

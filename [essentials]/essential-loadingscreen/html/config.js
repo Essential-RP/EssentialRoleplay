@@ -1,9 +1,9 @@
-const server = [{
-        logo: "logo", //FILE NAME png recommended
-        video: "https://www.youtube.com/embed/OIuhW9oENC4"
-    }
+// const server = [{
+//         logo: "logo", //FILE NAME png recommended
+//         video: "https://www.youtube.com/embed/OIuhW9oENC4"
+//     }
 
-]
+// ]
 
 const loadingsettings = [{
         progressPercentage: 100
@@ -40,7 +40,7 @@ const social = [{
 ]
 
 const sound = [{
-        musicname: "Elderbrook - Inner Light",
+        musicname: "",
         music: "nchub" //FILE NAME
     },
 

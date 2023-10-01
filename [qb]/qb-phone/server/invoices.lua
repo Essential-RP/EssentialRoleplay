@@ -47,6 +47,7 @@ RegisterNetEvent('qb-phone:server:PayMyInvoice', function(society, amount, invoi
 
         TriggerClientEvent('qb-phone:client:RemoveInvoiceFromTable', src, invoiceId)
         TriggerEvent("qb-phone:server:InvoiceHandler", true, amount, src, resource)
+        TriggerEvent('jim-payments:Tickets:Give', { amount = amount, senderCitizenId = sendercitizenid, sender = SenderPly.PlayerData.charinfo.firstname, society = society }, SenderPly)
 
         exports.oxmysql:execute('DELETE FROM phone_invoices WHERE id = ?', {invoiceId})
     end

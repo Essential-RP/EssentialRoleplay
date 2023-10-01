@@ -31,10 +31,11 @@ end
 
 -- Starting Apartment
 
-local function CreateApartmentFurnished(spawn)
+local function CreateApartmentFurnished(spawn)    
+	doorHeading = 3.783712
 	local objects = {}
     local POIOffsets = {}
-	POIOffsets.exit = json.decode('{"z":-1.832256,"y":-3.482544,"x":-3.516846,"h":359.581268}')       
+	POIOffsets.exit = json.decode('{"z":-1.674706,"y":-3.639465,"x":-3.504150,"h":2.70}')       
 	POIOffsets.clothes = json.decode('{"z":1.2, "y":-2.64, "x":2,"h":2.26}')
 	POIOffsets.stash = json.decode('{"z":1,"y":0.5,"x":3,"h":2.26}')
 	POIOffsets.logout = json.decode('{"z":1.2, "y":-2.64, "x":0,"h":2.26}')
