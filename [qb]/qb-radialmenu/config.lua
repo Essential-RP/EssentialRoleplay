@@ -8,7 +8,7 @@ Config.MenuItems = {
     [5] = {
         id = 'emotes',
         title = 'Emotes',
-        icon = 'face-meh-blank',
+        icon = 'smile-wink',
         type = 'client',
         event = 'dp:RecieveMenu',
         shouldClose = true,
@@ -374,75 +374,75 @@ Config.JobInteractions = {
     }, {
         id = 'policeradio',
         title = 'Police Radio',
-        icon = 'radio',
+        icon = 'broadcast-tower',
         items = {
             {
                 id = 'joinradio1',
                 title = 'Tac-1',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel1',
                 shouldClose = true
             },{
                 id = 'joinradio2',
                 title = 'Tac-2',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel2',
                 shouldClose = true
             }, {
                 id = 'joinradio3',
                 title = 'Tac-3',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel3',
                 shouldClose = true
             }, {
                 id = 'joinradio4',
                 title = 'Tac-4',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel4',
                 shouldClose = true
             }, {
                 id = 'joinradio5',
                 title = 'Tac-5',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel5',
                 shouldClose = true
             }, {
                 id = 'joinradio6',
                 title = 'Tac-6',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel6',
                 shouldClose = true
             }, {
                 id = 'joinradio7',
                 title = 'Tac-7',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel7',
                 shouldClose = true
             }, {
                 id = 'joinradio8',
                 title = 'Tac-8',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel8',
                 shouldClose = true
             }, {
                 id = 'joinradio9',
                 title = 'Tac-9',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel9',
                 shouldClose = true
             }, {
                 id = 'joinradio10',
                 title = 'Tac-10',
-                icon = 'microphone',
+                icon = 'microphone-alt',
                 type = 'client',
                 event = 'qb-radio:client:JoinRadioChannel10',
                 shouldClose = true

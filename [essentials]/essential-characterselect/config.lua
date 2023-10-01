@@ -26,7 +26,7 @@ Config.TrainCoord = {
 }
 
 Config.Clothing = {
-    ['qb-clothing'] = true,
+    ['qb-clothing'] = false,
     ['fivem-appearance'] = false,
-    ['illenium-appearance'] = false,
+    ['illenium-appearance'] = true,
 }

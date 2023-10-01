@@ -1,5 +1,5 @@
 QBShared = QBShared or {}
-QBShared.ForceJobDefaultDutyAtLogin = true -- true: Force duty state to jobdefaultDuty | false: set duty state from database last saved
+QBShared.ForceJobDefaultDutyAtLogin = false -- true: Force duty state to jobdefaultDuty | false: set duty state from database last saved
 QBShared.QBJobsStatus = false -- true: integrate qb-jobs into the whole of qb-core | false: treat qb-jobs as an add-on resource.
 QBShared.Jobs = {} -- All of below has been migrated into qb-jobs
 if QBShared.QBJobsStatus then return end
@@ -63,6 +63,49 @@ QBShared.Jobs = {
             },
         },
 	},
+
+    ['troopers'] = {
+		label = 'State Troopers',
+		defaultDuty = false,
+        description = 'State Troopers.',
+        isWhitelisted = true,
+		grades = {
+			['0'] = {
+                name = 'Trooper',
+                payment = 1000
+            },
+            ['1'] = {
+                name = 'Trooper first class',
+                payment = 1200
+            },
+            ['2'] = {
+                name = 'Sergeant',
+                payment = 1400
+            },
+            ['3'] = {
+                name = 'Lieutenant',
+                payment = 1500
+            },
+            ['4'] = {
+                name = 'Captain',
+                payment = 1600
+            },
+            ['5'] = {
+                name = 'Major',
+                payment = 1700
+            },
+            ['6'] = {
+                name = 'Lieutenant colonel',
+                payment = 1750
+            },
+            ['7'] = {
+                name = 'Colonel',
+                isboss = true,
+                payment = 1800
+            },
+        },
+	},
+
 	['ambulance'] = {
 		label = 'EMS',
         type = 'ems',
@@ -334,6 +377,17 @@ QBShared.Jobs = {
             },
         },
 	},
+    ['catcafe'] = {
+		label = 'Cat Cafe',
+		defaultDuty = true,
+		grades = {
+            ['0'] = { name = 'Recruit', payment = 50 },
+			['1'] = { name = 'Novice', payment = 75 },
+			['2'] = { name = 'Experienced', payment = 100 },
+			['3'] = { name = 'Advanced', payment = 125 },
+			['4'] = { name = 'Manager', isboss = true, payment = 150 },
+        },
+    },
 	['hotdog'] = {
 		label = 'Hotdog',
 		defaultDuty = true,
@@ -345,4 +399,5 @@ QBShared.Jobs = {
             },
         },
 	},
+    
 }
